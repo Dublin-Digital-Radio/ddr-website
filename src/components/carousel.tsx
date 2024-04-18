@@ -13,7 +13,7 @@ const settings = {
 };
 
 export function Carousel() {
-  const [posters, setPosters] = useState();
+  const [posters, setPosters] = useState<any[]>();
   useEffect(() => {
     (async () => {
       const now = new Date().toISOString();
@@ -31,7 +31,7 @@ export function Carousel() {
     <>
       <Slider {...settings}>
         {posters?.map((poster) => (
-          <div>
+          <div key={poster.image.data.attributes.url}>
             <img src={poster.image.data.attributes.url} />
           </div>
         ))}{" "}
