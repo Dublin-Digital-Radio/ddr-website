@@ -1,6 +1,6 @@
-import { Nav } from "@/components/nav";
-import { Player } from "@/components/player";
 import type { Metadata } from "next";
+import { Nav } from "@/components/nav/nav";
+import { Player } from "@/components/player";
 
 import "./globals.css";
 
