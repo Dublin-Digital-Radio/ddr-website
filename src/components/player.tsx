@@ -4,21 +4,20 @@ import { useEffect, useRef, useState } from "react";
 import { PlayIcon, PauseIcon } from "@heroicons/react/24/solid";
 import { fetchShows } from "@/api";
 
-export function Player({
-  initialCurrentShowTitle,
-}: {
-  initialCurrentShowTitle: string;
-}) {
+export function Player() {
   const [playing, setPlaying] = useState(false);
-  const [currentShowTitle, setCurrentShowTitle] = useState(
-    initialCurrentShowTitle
-  );
+  const [currentShowTitle, setCurrentShowTitle] = useState<string>();
   const player = useRef<HTMLAudioElement>(null);
 
+  const fetchAndSetCurrentShowTitle = async () => {
+    const shows = await fetchShows();
+    setCurrentShowTitle(shows.current.name);
+  };
+
   useEffect(() => {
+    fetchAndSetCurrentShowTitle();
     setInterval(async () => {
-      const shows = await fetchShows();
-      setCurrentShowTitle(shows.current.name);
+      fetchAndSetCurrentShowTitle();
     }, 60 * 1000);
   }, []);
 

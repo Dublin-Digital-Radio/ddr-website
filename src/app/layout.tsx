@@ -16,7 +16,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const shows = await fetchShows();
   return (
     <html lang="en">
       <head>
@@ -33,7 +32,7 @@ export default async function RootLayout({
       </head>
       <body>
         <Nav />
-        <Player initialCurrentShowTitle={shows.current.name} />
+        <Player />
         {children}
       </body>
     </html>
