@@ -20,7 +20,7 @@ export function CollapsibleNav({ navItems }: { navItems: NavItem[] }) {
       {drawerOpen ? (
         <ul>
           {navItems.map(({ href, text }) => (
-            <li>
+            <li key={href}>
               <Link href={href}>{text}</Link>
             </li>
           ))}
