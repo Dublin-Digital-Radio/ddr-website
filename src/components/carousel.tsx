@@ -5,7 +5,7 @@ import Slider from "react-slick";
 
 const settings = {
   dots: true,
-  arrows: false,
+  arrows: true,
   infinite: true,
   speed: 500,
   slidesToShow: 1,
@@ -29,13 +29,20 @@ export function Carousel() {
   }, []);
   return (
     <>
-      <Slider {...settings}>
-        {posters?.map((poster) => (
-          <div key={poster.image.data.attributes.url}>
-            <img src={poster.image.data.attributes.url} />
-          </div>
-        ))}{" "}
-      </Slider>
+      <div className="p-8">
+        <Slider {...settings}>
+          {posters?.map((poster) => (
+            <div key={poster.image.data.attributes.url}>
+              <div className="h-[300px] flex justify-center">
+                <img
+                  src={poster.image.data.attributes.url}
+                  className="max-h-full w-auto h-auto"
+                />
+              </div>
+            </div>
+          ))}
+        </Slider>
+      </div>
     </>
   );
 }
