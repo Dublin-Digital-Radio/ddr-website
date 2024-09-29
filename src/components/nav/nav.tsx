@@ -13,6 +13,10 @@ async function fetchNavItems(): Promise<NavItem[]> {
       text: "Home",
     },
     {
+      href: "/schedule",
+      text: "Schedule",
+    },
+    {
       href: "/residents",
       text: "Residents",
     },

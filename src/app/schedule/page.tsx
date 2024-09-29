@@ -1,0 +1,23 @@
+import { fetchWeeklySchedule } from "@/api";
+import { DateTime } from "luxon";
+
+export default async function Schedule() {
+  const schedule = await fetchWeeklySchedule();
+  return (
+    <main>
+      {schedule.map((day) => (
+        <div key={day.dayName}>
+          {day.dayName}
+          <ul>
+            {day.shows.map((show) => (
+              <li key={`${show.name}${show.starts}`}>
+                {show.starts.toLocaleString(DateTime.TIME_24_SIMPLE)} -{" "}
+                {show.ends.toLocaleString(DateTime.TIME_24_SIMPLE)} {show.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </main>
+  );
+}
