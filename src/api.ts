@@ -1,9 +1,6 @@
-import airtime from "@dublin-digital-radio/airtime-pro-api";
 import { decode } from "html-entities";
 import { DateTime } from "luxon";
 import { z } from "zod";
-
-const ddrAirtime = airtime.init({ stationName: "dublindigitalradio" });
 
 function convertAirtimeToCmsShowName(airtimeShowName: string) {
   const trimmedAirtimeShowName = airtimeShowName
@@ -73,7 +70,9 @@ export interface Show {
 }
 
 export async function fetchShows() {
-  const response = await ddrAirtime.liveInfoV2();
+  const response = await fetch(
+    "https://dublindigitalradio.airtime.pro/api/live-info-v2"
+  ).then((response) => response.json());
   const airtimeShows = z
     .object({
       shows: z.object({
@@ -121,7 +120,9 @@ const dayNameSchema = z.union([
 ]);
 
 export async function fetchWeeklySchedule() {
-  const response = await ddrAirtime.weekInfo();
+  const response = await fetch(
+    "https://dublindigitalradio.airtime.pro/api/week-info"
+  ).then((response) => response.json());
   const retrievedSchedule = z
     .object({
       monday: z.array(airtimeShowSchema),

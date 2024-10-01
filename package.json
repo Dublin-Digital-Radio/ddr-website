@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@dublin-digital-radio/airtime-pro-api": "github:Dublin-Digital-Radio/airtime-pro-api",
     "@heroicons/react": "^2.1.5",
     "html-entities": "^2.5.2",
     "luxon": "^3.5.0",
