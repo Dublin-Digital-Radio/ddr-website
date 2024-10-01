@@ -1,38 +1,102 @@
 import { DateTime } from "luxon";
 import { z } from "zod";
 import airtime from "@dublin-digital-radio/airtime-pro-api";
+import { decode } from "html-entities";
 
 const ddrAirtime = airtime.init({ stationName: "dublindigitalradio" });
 
-const showSchema = z.object({
+function convertAirtimeToCmsShowName(airtimeShowName: string) {
+  const trimmedAirtimeShowName = airtimeShowName
+    ? decodeURIComponent(airtimeShowName)
+        .split("|")
+        .map((showNameFragment) => showNameFragment.trim())[0]
+    : "";
+
+  return decode((trimmedAirtimeShowName ?? "").replace(/\s*\(R\)/, ""));
+}
+
+const cmsShowSchema = z.object({
+  data: z.array(
+    z.object({
+      attributes: z.object({
+        name: z.string(),
+        slug: z.string(),
+      }),
+    })
+  ),
+});
+
+async function fetchShowInfo(showName: string) {
+  return await fetch(
+    `https://ddr-cms.fly.dev/api/shows?${new URLSearchParams({
+      "filters[name][$eqi]": showName,
+      populate: "*",
+    })}`
+  )
+    .then((response) => response.json())
+    .then((showInfoResponse) => cmsShowSchema.parse(showInfoResponse))
+    .then((showInfoResponse) => showInfoResponse.data)
+    .then((showInfoEntries) => {
+      if (showInfoEntries[0]) {
+        let showInfo = showInfoEntries[0].attributes;
+        // if (showInfo.image?.data?.attributes.url) {
+        //   showInfo.image.data.attributes.url =
+        //     showInfo.image.data.attributes.url.replace(/^http:/, 'https:');
+        // }
+
+        return showInfo;
+      }
+    });
+}
+
+const airtimeShowSchema = z.object({
   name: z.string(),
   starts: z.string(),
   ends: z.string(),
 });
 
-function formatShow(show: z.infer<typeof showSchema>) {
+function formatShow(airtimeShow: z.infer<typeof airtimeShowSchema>) {
   return {
-    name: show.name,
-    starts: DateTime.fromISO(show.starts.replace(" ", "T")),
-    ends: DateTime.fromISO(show.ends.replace(" ", "T")),
+    name: airtimeShow.name,
+    starts: DateTime.fromISO(airtimeShow.starts.replace(" ", "T")),
+    ends: DateTime.fromISO(airtimeShow.ends.replace(" ", "T")),
   };
 }
 
-export type Show = ReturnType<typeof formatShow>;
+type AirtimeShow = ReturnType<typeof formatShow>;
+
+export interface Show {
+  name: string;
+  starts: AirtimeShow["starts"];
+  ends: AirtimeShow["ends"];
+  slug?: string;
+}
 
 export async function fetchShows() {
   const response = await ddrAirtime.liveInfoV2();
-  const retrievedShows = z
+  const airtimeShows = z
     .object({
       shows: z.object({
-        current: showSchema.nullable(),
+        current: airtimeShowSchema.nullable(),
       }),
     })
     .parse(response).shows;
+
+  if (airtimeShows.current) {
+    const currentShowResident = await fetchShowInfo(
+      convertAirtimeToCmsShowName(airtimeShows.current.name)
+    );
+
+    return {
+      current: {
+        ...formatShow(airtimeShows.current),
+        ...currentShowResident,
+      },
+    };
+  }
+
   return {
-    current: retrievedShows.current
-      ? formatShow(retrievedShows.current)
-      : retrievedShows.current,
+    current: null,
   };
 }
 
@@ -60,20 +124,20 @@ export async function fetchWeeklySchedule() {
   const response = await ddrAirtime.weekInfo();
   const retrievedSchedule = z
     .object({
-      monday: z.array(showSchema),
-      tuesday: z.array(showSchema),
-      wednesday: z.array(showSchema),
-      thursday: z.array(showSchema),
-      friday: z.array(showSchema),
-      saturday: z.array(showSchema),
-      sunday: z.array(showSchema),
-      nextmonday: z.array(showSchema),
-      nexttuesday: z.array(showSchema),
-      nextwednesday: z.array(showSchema),
-      nextthursday: z.array(showSchema),
-      nextfriday: z.array(showSchema),
-      nextsaturday: z.array(showSchema),
-      nextsunday: z.array(showSchema),
+      monday: z.array(airtimeShowSchema),
+      tuesday: z.array(airtimeShowSchema),
+      wednesday: z.array(airtimeShowSchema),
+      thursday: z.array(airtimeShowSchema),
+      friday: z.array(airtimeShowSchema),
+      saturday: z.array(airtimeShowSchema),
+      sunday: z.array(airtimeShowSchema),
+      nextmonday: z.array(airtimeShowSchema),
+      nexttuesday: z.array(airtimeShowSchema),
+      nextwednesday: z.array(airtimeShowSchema),
+      nextthursday: z.array(airtimeShowSchema),
+      nextfriday: z.array(airtimeShowSchema),
+      nextsaturday: z.array(airtimeShowSchema),
+      nextsunday: z.array(airtimeShowSchema),
     })
     .parse(response);
 
@@ -81,7 +145,7 @@ export async function fetchWeeklySchedule() {
   const todayDayName = dayNameSchema.parse(today.weekdayLong.toLowerCase());
   let schedule: {
     dayName: string;
-    shows: Show[];
+    shows: AirtimeShow[];
   }[] = [];
   schedule[0] = {
     dayName: dayName[todayDayName],

@@ -1,6 +1,7 @@
 import { fetchShows } from "@/api";
 import { Carousel } from "@/components/carousel";
 import { DateTime } from "luxon";
+import Link from "next/link";
 
 export default async function Home() {
   const shows = await fetchShows();
@@ -8,7 +9,15 @@ export default async function Home() {
     <main>
       {shows.current ? (
         <>
-          <div>{shows.current.name}</div>
+          <div>
+            {shows.current.slug ? (
+              <Link href={`/resident/${shows.current.slug}`}>
+                {shows.current.name}
+              </Link>
+            ) : (
+              <>{shows.current.name}</>
+            )}
+          </div>
           <div>
             {shows.current.starts.toLocaleString(DateTime.TIME_24_SIMPLE)} -{" "}
             {shows.current.ends.toLocaleString(DateTime.TIME_24_SIMPLE)}
