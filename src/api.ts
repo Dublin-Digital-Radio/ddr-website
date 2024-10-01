@@ -55,8 +55,8 @@ const airtimeShowSchema = z.object({
 function formatShow(airtimeShow: z.infer<typeof airtimeShowSchema>) {
   return {
     name: airtimeShow.name,
-    starts: DateTime.fromISO(airtimeShow.starts.replace(" ", "T")),
-    ends: DateTime.fromISO(airtimeShow.ends.replace(" ", "T")),
+    starts: airtimeShow.starts.replace(" ", "T"),
+    ends: airtimeShow.ends.replace(" ", "T"),
   };
 }
 

@@ -12,8 +12,14 @@ export default async function Schedule() {
           <ul>
             {day.shows.map((show) => (
               <li key={`${show.name}${show.starts}`}>
-                {show.starts.toLocaleString(DateTime.TIME_24_SIMPLE)} -{" "}
-                {show.ends.toLocaleString(DateTime.TIME_24_SIMPLE)} {show.name}
+                {DateTime.fromISO(show.starts).toLocaleString(
+                  DateTime.TIME_24_SIMPLE
+                )}{" "}
+                -{" "}
+                {DateTime.fromISO(show.ends).toLocaleString(
+                  DateTime.TIME_24_SIMPLE
+                )}{" "}
+                {show.name}
               </li>
             ))}
           </ul>

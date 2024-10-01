@@ -23,8 +23,13 @@ export function NowPlaying() {
         )}
       </div>
       <div>
-        {currentShow.starts.toLocaleString(DateTime.TIME_24_SIMPLE)} -{" "}
-        {currentShow.ends.toLocaleString(DateTime.TIME_24_SIMPLE)}
+        {DateTime.fromISO(currentShow.starts).toLocaleString(
+          DateTime.TIME_24_SIMPLE
+        )}{" "}
+        -{" "}
+        {DateTime.fromISO(currentShow.ends).toLocaleString(
+          DateTime.TIME_24_SIMPLE
+        )}
       </div>
     </>
   );
