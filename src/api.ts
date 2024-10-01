@@ -1,7 +1,7 @@
-import { DateTime } from "luxon";
-import { z } from "zod";
 import airtime from "@dublin-digital-radio/airtime-pro-api";
 import { decode } from "html-entities";
+import { DateTime } from "luxon";
+import { z } from "zod";
 
 const ddrAirtime = airtime.init({ stationName: "dublindigitalradio" });
 

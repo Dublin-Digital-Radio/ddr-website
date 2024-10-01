@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 import { CollapsibleNav } from "./collapsible-nav";
 
 export interface NavItem {

@@ -1,5 +1,6 @@
-import { fetchWeeklySchedule } from "@/api";
 import { DateTime } from "luxon";
+
+import { fetchWeeklySchedule } from "@/api";
 
 export default async function Schedule() {
   const schedule = await fetchWeeklySchedule();

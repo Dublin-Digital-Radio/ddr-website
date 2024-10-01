@@ -1,13 +1,13 @@
-import type { Metadata } from "next";
-
-import { fetchShows } from "@/api";
-import { NowPlayingProvider } from "@/components/now-playing-provider";
-import { Nav } from "@/components/nav/nav";
-import { Player } from "@/components/player";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
+
+import type { Metadata } from "next";
+
+import { fetchShows } from "@/api";
+import { Nav } from "@/components/nav/nav";
+import { NowPlayingProvider } from "@/components/now-playing-provider";
+import { Player } from "@/components/player";
 
 export const metadata: Metadata = {
   title: "Create Next App",

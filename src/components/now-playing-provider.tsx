@@ -1,7 +1,8 @@
 "use client";
 
-import { fetchShows, Show } from "@/api";
 import { createContext, useEffect, useState } from "react";
+
+import { fetchShows, Show } from "@/api";
 
 export const NowPlayingContext = createContext<{
   currentShow?: Show;

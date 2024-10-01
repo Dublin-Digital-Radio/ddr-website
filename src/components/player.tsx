@@ -1,7 +1,8 @@
 "use client";
 
+import { PauseIcon,PlayIcon } from "@heroicons/react/24/solid";
 import { useContext, useRef, useState } from "react";
-import { PlayIcon, PauseIcon } from "@heroicons/react/24/solid";
+
 import { NowPlayingContext } from "./now-playing-provider";
 
 export function Player() {

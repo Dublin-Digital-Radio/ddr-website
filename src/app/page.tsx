@@ -1,7 +1,8 @@
-import { fetchShows } from "@/api";
-import { Carousel } from "@/components/carousel";
 import { DateTime } from "luxon";
 import Link from "next/link";
+
+import { fetchShows } from "@/api";
+import { Carousel } from "@/components/carousel";
 
 export default async function Home() {
   const shows = await fetchShows();
