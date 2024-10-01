@@ -96,7 +96,7 @@ export async function fetchShows() {
   }
 
   return {
-    current: null,
+    current: undefined,
   };
 }
 

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { fetchShows } from "@/api";
+import { NowPlayingProvider } from "@/components/now-playing-provider";
 import { Nav } from "@/components/nav/nav";
 import { Player } from "@/components/player";
 
@@ -17,13 +19,16 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const shows = await fetchShows();
   return (
     <html lang="en">
       <head></head>
       <body>
         <Nav />
-        <Player />
-        {children}
+        <NowPlayingProvider initCurrentShow={shows.current}>
+          <Player />
+          {children}
+        </NowPlayingProvider>
       </body>
     </html>
   );

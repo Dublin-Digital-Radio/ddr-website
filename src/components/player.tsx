@@ -1,31 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { PlayIcon, PauseIcon } from "@heroicons/react/24/solid";
-import { fetchShows, Show } from "@/api";
+import { NowPlayingContext } from "./now-playing-provider";
 
 export function Player() {
+  const { currentShow } = useContext(NowPlayingContext);
   const [playing, setPlaying] = useState(false);
-  const [currentShowLoading, setCurrentShowLoading] = useState(true);
-  const [currentShow, setCurrentShow] = useState<Show | null>();
   const player = useRef<HTMLAudioElement>(null);
-
-  const fetchAndSetCurrentShowTitle = async () => {
-    const shows = await fetchShows();
-    setCurrentShow(shows.current);
-    setCurrentShowLoading(false);
-  };
-
-  useEffect(() => {
-    fetchAndSetCurrentShowTitle();
-    setInterval(async () => {
-      fetchAndSetCurrentShowTitle();
-    }, 60 * 1000);
-  }, []);
-
-  if (currentShowLoading) {
-    return <>Loading</>;
-  }
 
   return (
     <div>
