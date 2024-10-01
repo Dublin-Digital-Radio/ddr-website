@@ -10,9 +10,7 @@ const showSchema = z.object({
   ends: z.string(),
 });
 
-export type Show = z.infer<typeof showSchema>;
-
-function formatShow(show: Show) {
+function formatShow(show: z.infer<typeof showSchema>) {
   return {
     name: show.name,
     starts: DateTime.fromISO(show.starts.replace(" ", "T")),
@@ -20,17 +18,21 @@ function formatShow(show: Show) {
   };
 }
 
+export type Show = ReturnType<typeof formatShow>;
+
 export async function fetchShows() {
   const response = await ddrAirtime.liveInfoV2();
   const retrievedShows = z
     .object({
       shows: z.object({
-        current: showSchema,
+        current: showSchema.nullable(),
       }),
     })
     .parse(response).shows;
   return {
-    current: formatShow(retrievedShows.current),
+    current: retrievedShows.current
+      ? formatShow(retrievedShows.current)
+      : retrievedShows.current,
   };
 }
 
@@ -79,7 +81,7 @@ export async function fetchWeeklySchedule() {
   const todayDayName = dayNameSchema.parse(today.weekdayLong.toLowerCase());
   let schedule: {
     dayName: string;
-    shows: ReturnType<typeof formatShow>[];
+    shows: Show[];
   }[] = [];
   schedule[0] = {
     dayName: dayName[todayDayName],

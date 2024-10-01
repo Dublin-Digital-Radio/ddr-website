@@ -6,11 +6,15 @@ export default async function Home() {
   const shows = await fetchShows();
   return (
     <main>
-      <div>{shows.current.name}</div>
-      <div>
-        {shows.current.starts.toLocaleString(DateTime.TIME_24_SIMPLE)} -{" "}
-        {shows.current.ends.toLocaleString(DateTime.TIME_24_SIMPLE)}
-      </div>
+      {shows.current ? (
+        <>
+          <div>{shows.current.name}</div>
+          <div>
+            {shows.current.starts.toLocaleString(DateTime.TIME_24_SIMPLE)} -{" "}
+            {shows.current.ends.toLocaleString(DateTime.TIME_24_SIMPLE)}
+          </div>
+        </>
+      ) : null}
       <Carousel />
     </main>
   );
