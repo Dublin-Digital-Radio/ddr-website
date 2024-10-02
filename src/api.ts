@@ -77,25 +77,39 @@ export async function fetchShows() {
     .object({
       shows: z.object({
         current: airtimeShowSchema.nullable(),
+        next: z.array(airtimeShowSchema.nullable()).nullable(),
       }),
     })
     .parse(response).shows;
+
+  let currentShow: Show | undefined = undefined;
+  let nextShow: Show | undefined = undefined;
 
   if (airtimeShows.current) {
     const currentShowResident = await fetchShowInfo(
       convertAirtimeToCmsShowName(airtimeShows.current.name)
     );
 
-    return {
-      current: {
-        ...formatShow(airtimeShows.current),
-        ...currentShowResident,
-      },
+    currentShow = {
+      ...formatShow(airtimeShows.current),
+      ...currentShowResident,
+    };
+  }
+
+  if (airtimeShows.next?.[0]) {
+    const nextShowResident = await fetchShowInfo(
+      convertAirtimeToCmsShowName(airtimeShows.next[0].name)
+    );
+
+    nextShow = {
+      ...formatShow(airtimeShows.next[0]),
+      ...nextShowResident,
     };
   }
 
   return {
-    current: undefined,
+    current: currentShow,
+    next: nextShow,
   };
 }
 
