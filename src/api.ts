@@ -12,16 +12,24 @@ function convertAirtimeToCmsShowName(airtimeShowName: string) {
   return decode((trimmedAirtimeShowName ?? "").replace(/\s*\(R\)/, ""));
 }
 
-const cmsShowSchema = z.object({
-  data: z.array(
-    z.object({
-      attributes: z.object({
-        name: z.string(),
-        slug: z.string(),
-      }),
-    })
-  ),
-});
+function buildStrapiListSchema<Schema extends z.ZodType>(
+  attributesSchema: Schema
+) {
+  return z.object({
+    data: z.array(
+      z.object({
+        attributes: attributesSchema,
+      })
+    ),
+  });
+}
+
+const cmsShowSchema = buildStrapiListSchema(
+  z.object({
+    name: z.string(),
+    slug: z.string(),
+  })
+);
 
 async function fetchShowInfo(showName: string) {
   return await fetch(
@@ -184,4 +192,24 @@ export async function fetchWeeklySchedule() {
   }
 
   return schedule;
+}
+
+const mixesSchema = buildStrapiListSchema(
+  z.object({
+    name: z.string(),
+  })
+);
+
+export async function fetchMixes() {
+  return await fetch(
+    `https://ddr-cms.fly.dev/api/mixes?${new URLSearchParams({
+      "pagination[page]": "1",
+      "pagination[pageSize]": "6",
+      sort: "createdTime:desc",
+      "filters[slug][$null]": "false",
+    })}`
+  )
+    .then((response) => response.json())
+    .then((json) => mixesSchema.parse(json))
+    .then((mixesList) => mixesList.data);
 }
