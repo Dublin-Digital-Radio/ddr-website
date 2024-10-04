@@ -197,6 +197,7 @@ export async function fetchWeeklySchedule() {
 const mixesSchema = buildStrapiListSchema(
   z.object({
     name: z.string(),
+    url: z.string(),
   })
 );
 

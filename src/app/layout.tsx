@@ -3,11 +3,14 @@ import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
 
 import type { Metadata } from "next";
+import Script from "next/script";
 
 import { fetchShows } from "@/api";
 import { Nav } from "@/components/nav/nav";
 import { NowPlayingProvider } from "@/components/now-playing-provider";
 import { Player } from "@/components/player";
+
+import { MixcloudPlayer } from "./mixcloud-player";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,8 +31,10 @@ export default async function RootLayout({
         <NowPlayingProvider initCurrentShow={shows.current}>
           <Player />
           {children}
+          <MixcloudPlayer />
         </NowPlayingProvider>
       </body>
+      <Script src="//widget.mixcloud.com/media/js/widgetApi.js" />
     </html>
   );
 }

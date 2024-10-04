@@ -1,14 +1,21 @@
 "use client";
 
-import { PauseIcon,PlayIcon } from "@heroicons/react/24/solid";
-import { useContext, useRef, useState } from "react";
+import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
+import { useContext, useEffect, useRef } from "react";
 
 import { NowPlayingContext } from "./now-playing-provider";
 
 export function Player() {
-  const { currentShow } = useContext(NowPlayingContext);
-  const [playing, setPlaying] = useState(false);
+  const { currentShow, playing, setPlaying } = useContext(NowPlayingContext);
   const player = useRef<HTMLAudioElement>(null);
+
+  useEffect(() => {
+    if (playing) {
+      player.current?.play();
+    } else {
+      player.current?.pause();
+    }
+  }, [playing]);
 
   return (
     <div>
@@ -18,10 +25,8 @@ export function Player() {
             onClick={() => {
               if (player.current) {
                 if (playing) {
-                  player.current.pause();
                   setPlaying(false);
                 } else {
-                  player.current.play();
                   setPlaying(true);
                 }
               }
