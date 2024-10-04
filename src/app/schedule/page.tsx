@@ -2,6 +2,8 @@ import { DateTime } from "luxon";
 
 import { fetchWeeklySchedule } from "@/api";
 
+export const dynamic = "force-dynamic";
+
 export default async function Schedule() {
   const schedule = await fetchWeeklySchedule();
   return (
