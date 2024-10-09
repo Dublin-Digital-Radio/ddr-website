@@ -8,12 +8,11 @@ export function Mix({ name, url }: { name: string; url: string }) {
   const { activePlayer, setActivePlayer, setMixcloudIframeUrl } = useContext(NowPlayingContext);
 
   useEffect(() => {
-    // @ts-expect-error TODO: Add Mixcloud as global var
-    const widget = window.Mixcloud.PlayerWidget(
-      document.getElementById("mixcloud-iframe")
-    );
-
-    if (activePlayer !== 'mixcloud') {
+    if (activePlayer && activePlayer !== 'mixcloud') {
+      // @ts-expect-error TODO: Add Mixcloud as global var
+      const widget = window.Mixcloud.PlayerWidget(
+        document.getElementById("mixcloud-iframe")
+      );
       widget.ready.then(() => {
         widget.pause()
       });
