@@ -6,16 +6,16 @@ import { useContext, useEffect, useRef } from "react";
 import { NowPlayingContext } from "./now-playing-provider";
 
 export function Player() {
-  const { currentShow, playing, setPlaying } = useContext(NowPlayingContext);
+  const { currentShow, activePlayer, setActivePlayer } = useContext(NowPlayingContext);
   const player = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (playing) {
+    if (activePlayer === 'stream-1') {
       player.current?.play();
     } else {
       player.current?.pause();
     }
-  }, [playing]);
+  }, [activePlayer]);
 
   return (
     <div>
@@ -24,15 +24,15 @@ export function Player() {
           <button
             onClick={() => {
               if (player.current) {
-                if (playing) {
-                  setPlaying(false);
+                if (activePlayer === 'stream-1') {
+                  setActivePlayer(undefined);
                 } else {
-                  setPlaying(true);
+                  setActivePlayer('stream-1');
                 }
               }
             }}
           >
-            {playing ? (
+            {activePlayer === 'stream-1' ? (
               <PauseIcon className="size-8" />
             ) : (
               <PlayIcon className="size-8" />

@@ -10,19 +10,20 @@ import {
 
 import { fetchShows, Show } from "@/api";
 
+type Player = 'stream-1' | 'stream-2' | 'mixcloud'
+
 const defaultMixcloudIframeUrl =
   "https://www.mixcloud.com/widget/iframe/?feed=https%3A%2F%2Fwww.mixcloud.com%2FDublinDigitalRadio%2Fgetting-away-with-it-25th-february-2017%2F&hide_cover=1&mini=1&light=1";
 
 export const NowPlayingContext = createContext<{
-  playing: boolean;
-  setPlaying: Dispatch<SetStateAction<boolean>>;
+  activePlayer?: Player
+  setActivePlayer: Dispatch<SetStateAction<Player | undefined>>
   currentShow?: Show;
   nextShow?: Show;
   mixcloudIframeUrl: string;
   setMixcloudIframeUrl: Dispatch<SetStateAction<string>>;
 }>({
-  playing: false,
-  setPlaying: () => {},
+  setActivePlayer: () => {},
   currentShow: undefined,
   nextShow: undefined,
   mixcloudIframeUrl: defaultMixcloudIframeUrl,
@@ -38,7 +39,7 @@ export function NowPlayingProvider({
   initNextShow?: Show;
   children: React.ReactNode;
 }) {
-  const [playing, setPlaying] = useState(false);
+  const [activePlayer, setActivePlayer] = useState<Player | undefined>();
   const [currentShow, setCurrentShow] = useState<Show | undefined>(
     initCurrentShow
   );
@@ -63,8 +64,8 @@ export function NowPlayingProvider({
   return (
     <NowPlayingContext.Provider
       value={{
-        playing,
-        setPlaying,
+        activePlayer,
+        setActivePlayer,
         currentShow,
         nextShow,
         mixcloudIframeUrl,
