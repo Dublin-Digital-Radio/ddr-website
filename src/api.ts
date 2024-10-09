@@ -201,15 +201,20 @@ const mixesSchema = buildStrapiListSchema(
   })
 );
 
-export async function fetchMixes() {
-  return await fetch(
-    `https://ddr-cms.fly.dev/api/mixes?${new URLSearchParams({
+export type Mixes = z.infer<typeof mixesSchema>['data']
+
+export async function fetchMixes(params: {
+  searchQuery?: string
+}) {
+  const url = params.searchQuery ? `https://ddr-cms.fly.dev/api/mixes/search?${new URLSearchParams({
+      "filters": params.searchQuery,
+    })}` : `https://ddr-cms.fly.dev/api/mixes?${new URLSearchParams({
       "pagination[page]": "1",
       "pagination[pageSize]": "6",
       sort: "createdTime:desc",
       "filters[slug][$null]": "false",
     })}`
-  )
+  return await fetch(url)
     .then((response) => response.json())
     .then((json) => mixesSchema.parse(json))
     .then((mixesList) => mixesList.data);

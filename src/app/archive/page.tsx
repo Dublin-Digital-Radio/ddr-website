@@ -1,18 +1,18 @@
 import { fetchMixes } from "@/api";
 
-import { Mix } from "./mix";
+import { MixList } from "./mix-list";
 
-export default async function Archive() {
-  const mixes = await fetchMixes();
+export default async function Archive({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | undefined }
+}) {
+  const mixes = await fetchMixes({
+    searchQuery: searchParams.search
+  });
   return (
     <main>
-      <ul>
-        {mixes.map((mix) => (
-          <li key={mix.attributes.name}>
-            <Mix name={mix.attributes.name} url={mix.attributes.url} />
-          </li>
-        ))}
-      </ul>
+      <MixList initMixes={mixes} />
     </main>
   );
 }
