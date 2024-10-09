@@ -1,23 +1,11 @@
 "use client";
 
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 
 import { NowPlayingContext } from "@/components/now-playing-provider";
 
 export function Mix({ name, url }: { name: string; url: string }) {
-  const { activePlayer, setActivePlayer, setMixcloudIframeUrl } = useContext(NowPlayingContext);
-
-  useEffect(() => {
-    if (activePlayer && activePlayer !== 'mixcloud') {
-      // @ts-expect-error TODO: Add Mixcloud as global var
-      const widget = window.Mixcloud.PlayerWidget(
-        document.getElementById("mixcloud-iframe")
-      );
-      widget.ready.then(() => {
-        widget.pause()
-      });
-    }
-  }, [activePlayer]);
+  const { setActivePlayer, setMixcloudIframeUrl } = useContext(NowPlayingContext);
 
   const mixcloudIframeUrl = `https://www.mixcloud.com/widget/iframe/?feed=${encodeURIComponent(
     url
