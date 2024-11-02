@@ -28,16 +28,48 @@ const cmsShowSchema = buildStrapiListSchema(
   z.object({
     name: z.string(),
     slug: z.string(),
+    image: z.object({
+      data: z.object({
+        attributes: z.object({
+          url: z.string(),
+        }),
+      }),
+    }),
   })
 );
 
-async function fetchShowInfo(showName: string) {
-  return await fetch(
-    `https://ddr-cms.fly.dev/api/shows?${new URLSearchParams({
-      "filters[name][$eqi]": showName,
-      populate: "*",
-    })}`
-  )
+interface FetchShowInfoByNameParams {
+  showName: string;
+  slug?: never;
+}
+
+interface FetchShowInfoBySlugParams {
+  showName?: never;
+  slug: string;
+}
+
+type FetchShowInfoParams =
+  | FetchShowInfoByNameParams
+  | FetchShowInfoBySlugParams;
+
+export async function fetchShowInfo({ showName, slug }: FetchShowInfoParams) {
+  const searchParams = showName
+    ? new URLSearchParams({
+        "filters[name][$eqi]": showName,
+        populate: "*",
+      })
+    : slug
+    ? new URLSearchParams({
+        "filters[slug][$eqi]": slug,
+        populate: "*",
+      })
+    : undefined;
+
+  if (!searchParams) {
+    return undefined;
+  }
+
+  return await fetch(`https://ddr-cms.fly.dev/api/shows?${searchParams}`)
     .then((response) => response.json())
     .then((showInfoResponse) => cmsShowSchema.parse(showInfoResponse))
     .then((showInfoResponse) => showInfoResponse.data)
@@ -94,9 +126,9 @@ export async function fetchShows() {
   let nextShow: Show | undefined = undefined;
 
   if (airtimeShows.current) {
-    const currentShowResident = await fetchShowInfo(
-      convertAirtimeToCmsShowName(airtimeShows.current.name)
-    );
+    const currentShowResident = await fetchShowInfo({
+      showName: convertAirtimeToCmsShowName(airtimeShows.current.name),
+    });
 
     currentShow = {
       ...formatShow(airtimeShows.current),
@@ -105,9 +137,9 @@ export async function fetchShows() {
   }
 
   if (airtimeShows.next?.[0]) {
-    const nextShowResident = await fetchShowInfo(
-      convertAirtimeToCmsShowName(airtimeShows.next[0].name)
-    );
+    const nextShowResident = await fetchShowInfo({
+      showName: convertAirtimeToCmsShowName(airtimeShows.next[0].name),
+    });
 
     nextShow = {
       ...formatShow(airtimeShows.next[0]),

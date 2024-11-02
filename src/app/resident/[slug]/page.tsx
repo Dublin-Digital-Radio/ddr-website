@@ -1,17 +1,15 @@
-async function fetchResident(slug: string) {
-  return await fetch(
-    `https://ddr-cms.fly.dev/api/shows?populate=*&filters[slug][$eq]=${slug}`
-  )
-    .then((response) => response.json())
-    .then(({ data }) => data[0].attributes);
-}
+import { fetchShowInfo } from "@/api";
 
 export default async function Resident({
   params,
 }: {
   params: { slug: string };
 }) {
-  const resident = await fetchResident(params.slug);
+  const resident = await fetchShowInfo({ slug: params.slug });
+  if (!resident) {
+    return null;
+  }
+
   return (
     <main>
       <h2>{resident.name}</h2>
