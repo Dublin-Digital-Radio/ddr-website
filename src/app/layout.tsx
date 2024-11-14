@@ -26,7 +26,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body>
+      <body className="font-chivo">
         <Nav />
         <NowPlayingProvider initCurrentShow={shows.current}>
           <Player />
