@@ -37,21 +37,21 @@ export async function Nav() {
       <div className="md:hidden">
         <CollapsibleNav navItems={navItems} />
       </div>
-      <div className="hidden md:block">
-        <ul className="flex flex-wrap">
-          <li>
-            <div className="w-32 p-4">
-              <Image src={logo} alt="ddr logo" />
-            </div>
-          </li>
-          {navItems.map(({ href, text }) => (
-            <li key={href}>
-              <Link className="me-4" href={href}>
-                {text}
-              </Link>
-            </li>
-          ))}
-        </ul>
+      <div className="hidden md:flex flex-row">
+        <div className="w-40 p-4 mr-10">
+          <Image src={logo} alt="ddr logo" />
+        </div>
+        <div className="flex-1 flex justify-end pt-8">
+          <ul className="flex">
+            {navItems.map(({ href, text }) => (
+              <li key={href}>
+                <Link className="me-4 font-bold text-2xl uppercase" href={href}>
+                  {text}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
