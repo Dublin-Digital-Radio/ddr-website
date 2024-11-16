@@ -14,41 +14,33 @@ export function NowPlaying() {
   }
 
   return (
-    <>
-      <h1>Live now</h1>
+    <div className="flex flex-row">
+      <div>
+        {currentShow.imageUrl ? (
+          <img width={400} src={currentShow.imageUrl} />
+        ) : null}
+      </div>
       <div>
         {currentShow.slug ? (
-          <Link href={`/resident/${currentShow.slug}`}>{currentShow.name}</Link>
+          <h1 className="text-5xl font-bold uppercase">
+            <Link href={`/resident/${currentShow.slug}`}>
+              {currentShow.name}
+            </Link>
+          </h1>
         ) : (
-          <>{currentShow.name}</>
+          <h1 className="text-5xl font-bold uppercase">{currentShow.name}</h1>
         )}
+        <div className="text-lg font-bold">
+          {DateTime.fromISO(currentShow.starts).toLocaleString(
+            DateTime.TIME_24_SIMPLE
+          )}{" "}
+          -{" "}
+          {DateTime.fromISO(currentShow.ends).toLocaleString(
+            DateTime.TIME_24_SIMPLE
+          )}
+        </div>
+        {currentShow.tagline ? <div>{currentShow.tagline}</div> : null}
       </div>
-      <div>
-        {DateTime.fromISO(currentShow.starts).toLocaleString(
-          DateTime.TIME_24_SIMPLE
-        )}{" "}
-        -{" "}
-        {DateTime.fromISO(currentShow.ends).toLocaleString(
-          DateTime.TIME_24_SIMPLE
-        )}
-      </div>
-      <h1>Next</h1>
-      <div>
-        {nextShow.slug ? (
-          <Link href={`/resident/${nextShow.slug}`}>{nextShow.name}</Link>
-        ) : (
-          <>{nextShow.name}</>
-        )}
-      </div>
-      <div>
-        {DateTime.fromISO(nextShow.starts).toLocaleString(
-          DateTime.TIME_24_SIMPLE
-        )}{" "}
-        -{" "}
-        {DateTime.fromISO(nextShow.ends).toLocaleString(
-          DateTime.TIME_24_SIMPLE
-        )}
-      </div>
-    </>
+    </div>
   );
 }

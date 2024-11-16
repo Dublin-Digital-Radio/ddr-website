@@ -35,6 +35,7 @@ const cmsShowSchema = buildStrapiListSchema(
         }),
       }),
     }),
+    tagline: z.string(),
   })
 );
 
@@ -107,6 +108,8 @@ export interface Show {
   starts: AirtimeShow["starts"];
   ends: AirtimeShow["ends"];
   slug?: string;
+  imageUrl?: string;
+  tagline?: string;
 }
 
 export async function fetchShows() {
@@ -133,6 +136,10 @@ export async function fetchShows() {
     currentShow = {
       ...formatShow(airtimeShows.current),
       ...currentShowResident,
+      imageUrl: currentShowResident
+        ? currentShowResident.image.data.attributes.url
+        : undefined,
+      tagline: currentShowResident ? currentShowResident.tagline : undefined,
     };
   }
 
