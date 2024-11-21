@@ -29,13 +29,15 @@ const cmsShowSchema = buildStrapiListSchema(
     name: z.string(),
     slug: z.string(),
     image: z.object({
-      data: z.object({
-        attributes: z.object({
-          url: z.string(),
-        }),
-      }),
+      data: z
+        .object({
+          attributes: z.object({
+            url: z.string(),
+          }),
+        })
+        .nullable(),
     }),
-    tagline: z.string(),
+    tagline: z.string().nullable(),
   })
 );
 
@@ -76,7 +78,10 @@ export async function fetchShowInfo({ showName, slug }: FetchShowInfoParams) {
     .then((showInfoResponse) => showInfoResponse.data)
     .then((showInfoEntries) => {
       if (showInfoEntries[0]) {
-        let showInfo = showInfoEntries[0].attributes;
+        let showInfo = {
+          ...showInfoEntries[0].attributes,
+          tagline: showInfoEntries[0].attributes.tagline ?? undefined,
+        };
         // if (showInfo.image?.data?.attributes.url) {
         //   showInfo.image.data.attributes.url =
         //     showInfo.image.data.attributes.url.replace(/^http:/, 'https:');
@@ -136,10 +141,8 @@ export async function fetchShows() {
     currentShow = {
       ...formatShow(airtimeShows.current),
       ...currentShowResident,
-      imageUrl: currentShowResident
-        ? currentShowResident.image.data.attributes.url
-        : undefined,
-      tagline: currentShowResident ? currentShowResident.tagline : undefined,
+      imageUrl: currentShowResident?.image.data?.attributes.url,
+      tagline: currentShowResident?.tagline,
     };
   }
 
