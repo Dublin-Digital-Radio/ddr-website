@@ -123,6 +123,7 @@ export async function fetchShows() {
   )
     .then((response) => {
       if (response.ok) {
+        console.log("Airtime api ok!");
         return response.json();
       } else {
         throw new Error(response.statusText);
