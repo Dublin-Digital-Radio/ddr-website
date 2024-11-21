@@ -120,7 +120,17 @@ export interface Show {
 export async function fetchShows() {
   const response = await fetch(
     "https://dublindigitalradio.airtime.pro/api/live-info-v2"
-  ).then((response) => response.json());
+  )
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(response.statusText);
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
   const airtimeShows = z
     .object({
       shows: z.object({
