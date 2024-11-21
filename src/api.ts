@@ -119,7 +119,8 @@ export interface Show {
 
 export async function fetchShows() {
   const response = await fetch(
-    "https://dublindigitalradio.airtime.pro/api/live-info-v2"
+    "https://dublindigitalradio.airtime.pro/api/live-info-v2",
+    { cache: "force-cache" }
   )
     .then((response) => {
       if (response.ok) {
