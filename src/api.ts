@@ -130,6 +130,7 @@ export async function fetchShows() {
     })
     .catch((error) => {
       console.error(error);
+      throw error;
     });
   const airtimeShows = z
     .object({
