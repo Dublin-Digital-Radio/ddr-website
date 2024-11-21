@@ -13,7 +13,7 @@ export default async function Resident({
   return (
     <main>
       <h2>{resident.name}</h2>
-      <img width="200" src={resident.image.data.attributes.url} />
+      <img width="200" src={resident.image.data?.attributes.url} />
     </main>
   );
 }
