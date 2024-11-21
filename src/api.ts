@@ -236,6 +236,37 @@ export async function fetchWeeklySchedule() {
   return schedule;
 }
 
+export async function fetchNext24HrsSchedule() {
+  const response = await fetch(
+    "https://dublindigitalradio.airtime.pro/api/week-info"
+  ).then((response) => response.json());
+
+  const now = DateTime.now();
+  const nowPlus24Hrs = now.plus({ hours: 24 });
+  const nowDayName = dayNameSchema.parse(now.weekdayLong.toLowerCase());
+  const nextDayName =
+    nowDayName === "sunday"
+      ? "nextmonday"
+      : dayNameSchema.parse(nowPlus24Hrs.weekdayLong.toLowerCase());
+
+  const retrievedSchedule = z
+    .object({
+      [nowDayName]: z.array(airtimeShowSchema),
+      [nextDayName]: z.array(airtimeShowSchema),
+    })
+    .parse(response);
+
+  return [
+    ...(retrievedSchedule[nowDayName] ?? []).map(formatShow),
+    ...(retrievedSchedule[nextDayName] ?? []).map(formatShow),
+  ].filter((show) => {
+    return (
+      now < DateTime.fromISO(show.starts) &&
+      nowPlus24Hrs > DateTime.fromISO(show.starts)
+    );
+  });
+}
+
 const mixesSchema = buildStrapiListSchema(
   z.object({
     name: z.string(),
