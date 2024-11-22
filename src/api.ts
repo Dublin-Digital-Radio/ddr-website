@@ -18,6 +18,7 @@ function buildStrapiListSchema<Schema extends z.ZodType>(
   return z.object({
     data: z.array(
       z.object({
+        id: z.number(),
         attributes: attributesSchema,
       })
     ),
@@ -319,6 +320,23 @@ export async function fetchResidents() {
   )
     .then((response) => response.json())
     .then((json) => residentsSchema.parse(json))
+    .then(({ data }) => {
+      return data;
+    });
+}
+
+const blogPostsSchema = buildStrapiListSchema(
+  z.object({
+    title: z.string(),
+  })
+);
+
+export async function fetchBlogPosts() {
+  return await fetch("https://ddr-cms.fly.dev/api/blogs")
+    .then((response) => response.json())
+    .then((json) => {
+      return blogPostsSchema.parse(json);
+    })
     .then(({ data }) => {
       return data;
     });
