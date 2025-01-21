@@ -1,21 +1,26 @@
 import Link from "next/link";
 
-import { fetchResidents } from "@/api";
+import { fetchAllResidents } from "@/api";
 
 export default async function Residents() {
-  const residents = await fetchResidents();
+  const residents = await fetchAllResidents();
 
   return (
     <main>
-      <ul>
-        {residents?.map((resident) => (
-          <li key={resident.attributes.name}>
-            <Link href={`/resident/${resident.attributes.slug}`}>
-              {resident.attributes.name}
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {residents
+          ?.filter((resident) =>
+            Boolean(resident.attributes.image.data?.attributes.url)
+          )
+          .map((resident) => (
+            <div key={resident.attributes.name}>
+              <Link href={`/resident/${resident.attributes.slug}`}>
+                <img src={resident.attributes.image.data?.attributes.url} />
+                {resident.attributes.name}
+              </Link>
+            </div>
+          ))}
+      </div>
     </main>
   );
 }

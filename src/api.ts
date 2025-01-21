@@ -22,6 +22,14 @@ function buildStrapiListSchema<Schema extends z.ZodType>(
         attributes: attributesSchema,
       })
     ),
+    meta: z.object({
+      pagination: z.object({
+        page: z.number(),
+        pageSize: z.number(),
+        pageCount: z.number(),
+        total: z.number(),
+      }),
+    }),
   });
 }
 
@@ -313,18 +321,38 @@ const residentsSchema = buildStrapiListSchema(
   z.object({
     name: z.string(),
     slug: z.string(),
+    image: z.object({
+      data: z
+        .object({
+          attributes: z.object({
+            url: z.string(),
+          }),
+        })
+        .nullable(),
+    }),
   })
 );
 
-export async function fetchResidents() {
-  return await fetch(
-    "https://ddr-cms.fly.dev/api/shows?pagination[page]=1&pagination[pageSize]=20&filters[active][$eq]=true&sort=name&populate=*"
-  )
-    .then((response) => response.json())
-    .then((json) => residentsSchema.parse(json))
-    .then(({ data }) => {
-      return data;
-    });
+export async function fetchAllResidents() {
+  let allResidents: z.infer<typeof residentsSchema>["data"] = [];
+  let currentPage = 1;
+  let pageCount = 1;
+
+  do {
+    await fetch(
+      `https://ddr-cms.fly.dev/api/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&sort=name&populate=*`
+    )
+      .then((response) => response.json())
+      .then((json) => residentsSchema.parse(json))
+      .then(({ data, meta }) => {
+        pageCount = meta.pagination.pageCount;
+        allResidents = allResidents.concat(data);
+      });
+
+    currentPage++;
+  } while (currentPage <= pageCount);
+
+  return allResidents;
 }
 
 const blogPostsSchema = buildStrapiListSchema(
