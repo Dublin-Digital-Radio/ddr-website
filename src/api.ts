@@ -121,7 +121,7 @@ export interface Show {
 export async function fetchShows() {
   const response = await fetch(
     "https://dublindigitalradio.airtime.pro/api/live-info-v2",
-    { cache: "force-cache" }
+    { cache: "no-store" }
   )
     .then((response) => {
       if (response.ok) {
@@ -199,7 +199,8 @@ const dayNameSchema = z.union([
 
 export async function fetchWeeklySchedule() {
   const response = await fetch(
-    "https://dublindigitalradio.airtime.pro/api/week-info"
+    "https://dublindigitalradio.airtime.pro/api/week-info",
+    { cache: "no-store" }
   ).then((response) => response.json());
   const retrievedSchedule = z
     .object({
@@ -252,7 +253,8 @@ export async function fetchWeeklySchedule() {
 
 export async function fetchNext24HrsSchedule() {
   const response = await fetch(
-    "https://dublindigitalradio.airtime.pro/api/week-info"
+    "https://dublindigitalradio.airtime.pro/api/week-info",
+    { cache: "no-store" }
   ).then((response) => response.json());
 
   const now = DateTime.now();
