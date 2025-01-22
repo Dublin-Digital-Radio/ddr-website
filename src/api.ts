@@ -24,10 +24,11 @@ function buildStrapiListSchema<Schema extends z.ZodType>(
     ),
     meta: z.object({
       pagination: z.object({
-        page: z.number(),
-        pageSize: z.number(),
-        pageCount: z.number(),
-        total: z.number(),
+        // Some search APIs don't return pagination
+        page: z.number().optional(),
+        pageSize: z.number().optional(),
+        pageCount: z.number().optional(),
+        total: z.number().optional(),
       }),
     }),
   });
@@ -313,7 +314,9 @@ export async function fetchMixes(params: { searchQuery?: string }) {
       })}`;
   return await fetch(url)
     .then((response) => response.json())
-    .then((json) => mixesSchema.parse(json))
+    .then((json) => {
+      return mixesSchema.parse(json);
+    })
     .then((mixesList) => mixesList.data);
 }
 
@@ -345,7 +348,9 @@ export async function fetchAllResidents() {
       .then((response) => response.json())
       .then((json) => residentsSchema.parse(json))
       .then(({ data, meta }) => {
-        pageCount = meta.pagination.pageCount;
+        if (meta.pagination.pageCount) {
+          pageCount = meta.pagination.pageCount;
+        }
         allResidents = allResidents.concat(data);
       });
 
