@@ -336,6 +336,8 @@ const residentsSchema = buildStrapiListSchema(
   })
 );
 
+export type Residents = z.infer<typeof residentsSchema>["data"];
+
 export async function fetchAllResidents() {
   let allResidents: z.infer<typeof residentsSchema>["data"] = [];
   let currentPage = 1;
@@ -358,6 +360,19 @@ export async function fetchAllResidents() {
   } while (currentPage <= pageCount);
 
   return allResidents;
+}
+
+export async function fetchResidents(params: { searchQuery?: string }) {
+  let currentPage = 1;
+
+  return await fetch(
+    `https://ddr-cms.fly.dev/api/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&filters[name][$containsi]=${params.searchQuery}&sort=name&populate=*`
+  )
+    .then((response) => response.json())
+    .then((json) => residentsSchema.parse(json))
+    .then(({ data }) => {
+      return data;
+    });
 }
 
 const blogPostsSchema = buildStrapiListSchema(
