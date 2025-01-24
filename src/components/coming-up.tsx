@@ -6,7 +6,7 @@ export async function ComingUp() {
   const next24HrsSchedule = await fetchNext24HrsSchedule();
   return (
     <div>
-      <h1 className="text-5xl font-bold uppercase">Coming up</h1>
+      <h1 className="text-3xl md:text-5xl font-bold uppercase">Coming up</h1>
       <ul>
         {next24HrsSchedule.map((show) => (
           <li key={`${show.name}${show.starts}`}>

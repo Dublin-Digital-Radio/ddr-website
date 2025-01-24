@@ -14,7 +14,7 @@ export function NowPlaying() {
   }
 
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-col md:flex-row">
       <div>
         {currentShow.imageUrl ? (
           <img width={400} src={currentShow.imageUrl} />
@@ -22,13 +22,15 @@ export function NowPlaying() {
       </div>
       <div>
         {currentShow.slug ? (
-          <h1 className="text-5xl font-bold uppercase">
+          <h1 className="text-3xl md:text-5xl font-bold uppercase">
             <Link href={`/resident/${currentShow.slug}`}>
               {currentShow.name}
             </Link>
           </h1>
         ) : (
-          <h1 className="text-5xl font-bold uppercase">{currentShow.name}</h1>
+          <h1 className="text-3xl md:text-5xl font-bold uppercase">
+            {currentShow.name}
+          </h1>
         )}
         <div className="text-lg font-bold">
           {DateTime.fromISO(currentShow.starts).toLocaleString(

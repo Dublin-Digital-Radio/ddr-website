@@ -6,12 +6,12 @@ import { NowPlaying } from "@/components/now-playing";
 export default async function Home() {
   return (
     <main className="flex flex-col">
-      <div className="flex">
-        <div className="flex-1">
+      <div className="flex flex-col md:flex-row">
+        <div className="flex-1 mb-4">
           <NowPlaying />
         </div>
         {/* <Carousel /> */}
-        <div className="flex-1">
+        <div className="flex-1 mb-4">
           <ComingUp />
         </div>
       </div>
