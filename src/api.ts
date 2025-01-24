@@ -378,11 +378,22 @@ export async function fetchResidents(params: { searchQuery?: string }) {
 const blogPostsSchema = buildStrapiListSchema(
   z.object({
     title: z.string(),
+    image: z.object({
+      data: z
+        .object({
+          attributes: z.object({
+            url: z.string(),
+          }),
+        })
+        .nullable(),
+    }),
   })
 );
 
 export async function fetchBlogPosts() {
-  return await fetch("https://ddr-cms.fly.dev/api/blogs")
+  return await fetch(
+    "https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=3&populate=*"
+  )
     .then((response) => response.json())
     .then((json) => {
       return blogPostsSchema.parse(json);
