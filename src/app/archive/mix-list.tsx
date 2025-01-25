@@ -39,20 +39,20 @@ export function MixList({ initMixes }: { initMixes: Mixes }) {
           );
         }}
       >
-        <div className="px-4">
+        <div className="px-4 mb-2">
           <input
             type="text"
             value={searchQuery ?? ""}
             onChange={(event) => setSearchQuery(event.target.value)}
-            className="w-full md:w-6/12 border-black border-2 text-4xl"
-            placeholder="Search ddr archive"
+            className="w-full md:w-6/12 border-black border-2 text-3xl"
+            placeholder="Search the ddr. archive"
           />
         </div>
         <div className="flex px-4">
-          <div className="flex-1">
+          <div className="flex-1 pr-1">
             <button
               type="button"
-              className="w-full"
+              className="w-full py-2.5 px-5 text-md rounded-lg border"
               onClick={async () => {
                 setSearchQuery(null);
                 const mixes = await fetchMixes({
@@ -65,15 +65,17 @@ export function MixList({ initMixes }: { initMixes: Mixes }) {
               Clear
             </button>
           </div>
-          <div className="flex-1">
-            <button className="w-full">Search</button>
+          <div className="flex-1 pl-1">
+            <button className="w-full py-2.5 px-5 text-md rounded-lg border bg-black text-white">
+              Search
+            </button>
           </div>
         </div>
       </form>
       <ul>
         {mixes.map((mix) => (
           <li key={mix.attributes.name}>
-            <Mix name={mix.attributes.name} url={mix.attributes.url} />
+            <Mix mix={mix} />
           </li>
         ))}
       </ul>

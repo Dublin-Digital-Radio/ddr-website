@@ -296,6 +296,11 @@ const mixesSchema = buildStrapiListSchema(
   z.object({
     name: z.string(),
     url: z.string(),
+    pictures: z
+      .object({
+        "320wx320h": z.string(),
+      })
+      .optional(),
   })
 );
 
