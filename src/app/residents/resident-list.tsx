@@ -1,34 +1,31 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
-import { fetchResidents, Residents } from "@/api";
+import { fetchAllResidents, fetchResidents, Residents } from "@/api";
+import { SearchForm } from "@/components/search-form";
 
 export function ResidentList({ initResidents }: { initResidents: Residents }) {
-  const searchParams = useSearchParams();
   const [residents, setResidents] = useState(initResidents);
-  const [searchQuery, setSearchQuery] = useState(searchParams.get("search"));
+
+  const handleSubmit = useCallback(async (searchQuery: string | undefined) => {
+    const residents = searchQuery
+      ? await fetchResidents({
+          searchQuery,
+        })
+      : await fetchAllResidents();
+    setResidents(residents);
+  }, []);
 
   return (
     <div>
-      <form
-        onSubmit={async (event) => {
-          event.preventDefault();
-          const residents = await fetchResidents({
-            searchQuery: searchQuery ?? undefined,
-          });
-          setResidents(residents);
-          window.history.pushState(null, "", `?search=${searchQuery}`);
-        }}
-      >
-        <input
-          type="text"
-          value={searchQuery ?? ""}
-          onChange={(event) => setSearchQuery(event.target.value)}
+      <div className="mb-4">
+        <SearchForm
+          placeholderText="Search the ddr. archive"
+          onSubmit={handleSubmit}
         />
-      </form>
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {residents
           ?.filter((resident) =>
