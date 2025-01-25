@@ -301,17 +301,32 @@ const mixesSchema = buildStrapiListSchema(
 
 export type Mixes = z.infer<typeof mixesSchema>["data"];
 
+function getSearchQueryParams(searchQuery: string) {
+  const terms = searchQuery.split(" ");
+  if (terms.length === 0) {
+    return {};
+  } else if (terms.length === 1 && terms[0]) {
+    return { "filters[name][$containsi]": terms[0] };
+  } else {
+    return terms.reduce((acc, term, index) => {
+      return {
+        ...acc,
+        [`filters[$or][0][${index}][name][$containsi]`]: term,
+      };
+    }, {} as Record<string, string>);
+  }
+}
+
 export async function fetchMixes(params: { searchQuery?: string }) {
-  const url = params.searchQuery
-    ? `https://ddr-cms.fly.dev/api/mixes/search?${new URLSearchParams({
-        filters: params.searchQuery,
-      })}`
-    : `https://ddr-cms.fly.dev/api/mixes?${new URLSearchParams({
-        "pagination[page]": "1",
-        "pagination[pageSize]": "6",
-        sort: "createdTime:desc",
-        "filters[slug][$null]": "false",
-      })}`;
+  // Using Strapi filters because the custom `/mixes/search` API is a bit broken
+  // https://github.com/Dublin-Digital-Radio/ddr-cms/issues/5
+  const url = `https://ddr-cms.fly.dev/api/mixes?${new URLSearchParams({
+    "pagination[page]": "1",
+    "pagination[pageSize]": "20",
+    sort: "createdTime:desc",
+    "filters[slug][$null]": "false",
+    ...(params.searchQuery ? getSearchQueryParams(params.searchQuery) : {}),
+  })}`;
   return await fetch(url)
     .then((response) => response.json())
     .then((json) => {
