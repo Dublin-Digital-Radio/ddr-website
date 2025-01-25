@@ -22,7 +22,7 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
     <div>
       <div className="mb-4">
         <SearchForm
-          placeholderText="Search the ddr. archive"
+          placeholderText="Search ddr. residents"
           onSubmit={handleSubmit}
         />
       </div>
