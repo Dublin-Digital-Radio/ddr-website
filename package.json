@@ -15,6 +15,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@heroicons/react": "^2.1.5",
+    "@widgetbot/react-embed": "^1.9.0",
     "html-entities": "^2.5.2",
     "luxon": "^3.5.0",
     "next": "^14.2.18",
