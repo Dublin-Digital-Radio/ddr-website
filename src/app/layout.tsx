@@ -1,7 +1,9 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./globals.css";
+import "@fortawesome/fontawesome-svg-core/styles.css";
 
+import { config } from "@fortawesome/fontawesome-svg-core";
 import type { Metadata } from "next";
 import Script from "next/script";
 
@@ -10,6 +12,7 @@ import { NowPlayingProvider } from "@/components/now-playing-provider";
 import { Player } from "@/components/player";
 
 import { MixcloudPlayer } from "./mixcloud-player";
+config.autoAddCss = false;
 
 export const metadata: Metadata = {
   title: "Create Next App",

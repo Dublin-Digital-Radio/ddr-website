@@ -48,6 +48,10 @@ const cmsShowSchema = buildStrapiListSchema(
         .nullable(),
     }),
     tagline: z.string().nullable(),
+    instagram: z.string().nullable(),
+    twitter: z.string().nullable(),
+    facebook: z.string().nullable(),
+    website: z.string().nullable(),
   })
 );
 
