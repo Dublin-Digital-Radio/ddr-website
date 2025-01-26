@@ -12,10 +12,13 @@ export function SearchForm({
   const pathname = usePathname();
   const [searchQuery, setSearchQuery] = useState(searchParams.get("search"));
 
-  const handlePopstate = useCallback(async (event: PopStateEvent) => {
-    setSearchQuery(event.state.searchQuery);
-    onSubmit(event.state.searchQuery ?? undefined);
-  }, []);
+  const handlePopstate = useCallback(
+    async (event: PopStateEvent) => {
+      setSearchQuery(event.state.searchQuery);
+      onSubmit(event.state.searchQuery ?? undefined);
+    },
+    [onSubmit]
+  );
 
   useEffect(() => {
     window.addEventListener("popstate", handlePopstate);
