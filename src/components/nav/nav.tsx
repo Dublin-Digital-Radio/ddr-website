@@ -43,7 +43,9 @@ export async function Nav() {
       </div>
       <div className="hidden md:flex flex-row">
         <div className="w-40 p-4 mr-10">
-          <Image src={logo} alt="ddr logo" />
+          <Link href="/">
+            <Image src={logo} alt="ddr logo" />
+          </Link>
         </div>
         <div className="flex-1 flex justify-end pt-8">
           <ul className="flex">

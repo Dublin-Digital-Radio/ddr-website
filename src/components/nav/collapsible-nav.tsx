@@ -42,7 +42,9 @@ export function CollapsibleNav({ navItems }: { navItems: NavItem[] }) {
         ) : null}
       </div>
       <div className="flex flex-1 justify-center p-2">
-        <Image src={logo} alt="ddr logo" height={24} />
+        <Link href="/">
+          <Image src={logo} alt="ddr logo" height={24} />
+        </Link>
       </div>
       <div className="flex-1"></div>
     </div>
