@@ -5,7 +5,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
 
-import { fetchShows } from "@/api";
 import { Nav } from "@/components/nav/nav";
 import { NowPlayingProvider } from "@/components/now-playing-provider";
 import { Player } from "@/components/player";
@@ -22,13 +21,12 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const shows = await fetchShows();
   return (
     <html lang="en">
       <head></head>
       <body className="font-chivo">
         <Nav />
-        <NowPlayingProvider initCurrentShow={shows.current}>
+        <NowPlayingProvider>
           <Player />
           {children}
           <MixcloudPlayer />

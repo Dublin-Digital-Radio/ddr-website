@@ -412,7 +412,8 @@ const blogPostsSchema = buildStrapiListSchema(
 
 export async function fetchBlogPosts() {
   return await fetch(
-    "https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=3&populate=*"
+    "https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=3&populate=*",
+    { cache: "no-store" }
   )
     .then((response) => response.json())
     .then((json) => {
