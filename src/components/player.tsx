@@ -6,11 +6,12 @@ import { useContext, useEffect, useRef } from "react";
 import { NowPlayingContext } from "./now-playing-provider";
 
 export function Player() {
-  const { currentShow, activePlayer, setActivePlayer } = useContext(NowPlayingContext);
+  const { currentShow, activePlayer, setActivePlayer } =
+    useContext(NowPlayingContext);
   const player = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
-    if (activePlayer === 'stream-1') {
+    if (activePlayer === "stream-1") {
       player.current?.play();
     } else {
       player.current?.pause();
@@ -24,15 +25,15 @@ export function Player() {
           <button
             onClick={() => {
               if (player.current) {
-                if (activePlayer === 'stream-1') {
+                if (activePlayer === "stream-1") {
                   setActivePlayer(undefined);
                 } else {
-                  setActivePlayer('stream-1');
+                  setActivePlayer("stream-1");
                 }
               }
             }}
           >
-            {activePlayer === 'stream-1' ? (
+            {activePlayer === "stream-1" ? (
               <PauseIcon className="size-8" />
             ) : (
               <PlayIcon className="size-8" />
@@ -45,7 +46,7 @@ export function Player() {
           />
         </>
       ) : (
-        <>Station offline</>
+        <noscript>Enable JavaScript to enable the player.</noscript>
       )}
     </div>
   );
