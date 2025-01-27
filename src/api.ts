@@ -124,70 +124,93 @@ type AirtimeShow = ReturnType<typeof formatShow>;
 
 export interface Show {
   name: string;
-  starts: AirtimeShow["starts"];
-  ends: AirtimeShow["ends"];
+  starts?: string;
+  ends?: string;
   slug?: string;
   imageUrl?: string;
   tagline?: string;
 }
 
-export async function fetchShows() {
-  const response = await fetch(
-    "https://dublindigitalradio.airtime.pro/api/live-info-v2",
-    { cache: "no-store" }
-  )
-    .then((response) => {
-      if (response.ok) {
-        console.log("Airtime api ok!");
-        return response.json();
-      } else {
-        throw new Error(response.statusText);
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      throw error;
-    });
-  const airtimeShows = z
-    .object({
-      shows: z.object({
-        current: airtimeShowSchema.nullable(),
-        next: z.array(airtimeShowSchema.nullable()).nullable(),
+const radioCultLiveShowSchema = z.object({
+  success: z.boolean(),
+  result: z.union([
+    z.object({
+      status: z.literal("schedule"),
+      content: z.object({
+        title: z.string(),
+        startDateUtc: z.string(),
+        endDateUtc: z.string(),
       }),
-    })
-    .parse(response).shows;
+    }),
+    z.object({
+      status: z.literal("defaultPlaylist"),
+      content: z.object({
+        name: z.string(),
+      }),
+      metadata: z.object({
+        title: z.string(),
+      }),
+    }),
+    z.object({
+      status: z.literal("offAir"),
+      content: z.literal("Off Air"),
+    }),
+  ]),
+});
 
-  let currentShow: Show | undefined = undefined;
-  let nextShow: Show | undefined = undefined;
+export async function fetchRadioCultLiveShow() {
+  try {
+    const radioCultLiveShow = await fetch(
+      "https://api.radiocult.fm/api/station/dublin-digital-radio/schedule/live",
+      {
+        headers: {
+          "x-api-key": process.env.NEXT_PUBLIC_RADIO_CULT_API_KEY ?? "",
+        },
+      }
+    )
+      .then((response) => response.json())
+      .then((response) => {
+        return radioCultLiveShowSchema.parse(response);
+      })
+      .then((response) => {
+        if (response.result.status === "offAir") {
+          return undefined;
+        } else if (response.result.status === "defaultPlaylist") {
+          return {
+            title: response.result.content.name,
+            starts: undefined,
+            ends: undefined,
+            tagline: response.result.metadata.title,
+          };
+        } else {
+          return {
+            title: response.result.content.title,
+            starts: response.result.content.startDateUtc,
+            ends: response.result.content.endDateUtc,
+          };
+        }
+      });
 
-  if (airtimeShows.current) {
-    const currentShowResident = await fetchShowInfo({
-      showName: convertAirtimeToCmsShowName(airtimeShows.current.name),
-    });
+    if (radioCultLiveShow) {
+      const currentShowResident = await fetchShowInfo({
+        showName: convertAirtimeToCmsShowName(radioCultLiveShow.title),
+      });
 
-    currentShow = {
-      ...formatShow(airtimeShows.current),
-      ...currentShowResident,
-      imageUrl: currentShowResident?.image.data?.attributes.url,
-      tagline: currentShowResident?.tagline,
-    };
+      return {
+        name: radioCultLiveShow.title,
+        starts: "",
+        ends: "",
+        ...currentShowResident,
+        imageUrl: currentShowResident?.image.data?.attributes.url,
+        tagline: currentShowResident?.tagline ?? radioCultLiveShow.tagline,
+      };
+    } else {
+      return undefined;
+    }
+  } catch (error) {
+    console.log(error);
+    return undefined;
   }
-
-  if (airtimeShows.next?.[0]) {
-    const nextShowResident = await fetchShowInfo({
-      showName: convertAirtimeToCmsShowName(airtimeShows.next[0].name),
-    });
-
-    nextShow = {
-      ...formatShow(airtimeShows.next[0]),
-      ...nextShowResident,
-    };
-  }
-
-  return {
-    current: currentShow,
-    next: nextShow,
-  };
 }
 
 const dayName = {
@@ -264,36 +287,46 @@ export async function fetchWeeklySchedule() {
   return schedule;
 }
 
-export async function fetchNext24HrsSchedule() {
-  const response = await fetch(
-    "https://dublindigitalradio.airtime.pro/api/week-info",
-    { cache: "no-store" }
-  ).then((response) => response.json());
+const radioCultScheduleSchema = z.object({
+  schedules: z.array(
+    z.object({
+      title: z.string(),
+      start: z.string(),
+      end: z.string(),
+    })
+  ),
+});
 
+export async function fetchRadioCultNext24HrsSchedule() {
   const now = DateTime.now();
   const nowPlus24Hrs = now.plus({ hours: 24 });
-  const nowDayName = dayNameSchema.parse(now.weekdayLong.toLowerCase());
-  const nextDayName =
-    nowDayName === "sunday"
-      ? "nextmonday"
-      : dayNameSchema.parse(nowPlus24Hrs.weekdayLong.toLowerCase());
+  const startDateTimestamp = now.toUTC();
+  const endDateTimestamp = nowPlus24Hrs.toUTC();
 
-  const retrievedSchedule = z
-    .object({
-      [nowDayName]: z.array(airtimeShowSchema),
-      [nextDayName]: z.array(airtimeShowSchema),
-    })
-    .parse(response);
-
-  return [
-    ...(retrievedSchedule[nowDayName] ?? []).map(formatShow),
-    ...(retrievedSchedule[nextDayName] ?? []).map(formatShow),
-  ].filter((show) => {
-    return (
-      now < DateTime.fromISO(show.starts) &&
-      nowPlus24Hrs > DateTime.fromISO(show.starts)
-    );
-  });
+  return fetch(
+    `https://api.radiocult.fm/api/station/dublin-digital-radio/schedule?startDate=${startDateTimestamp}&endDate=${endDateTimestamp}`,
+    {
+      headers: {
+        "x-api-key": process.env.NEXT_PUBLIC_RADIO_CULT_API_KEY ?? "",
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((response) => radioCultScheduleSchema.parse(response))
+    .then((response) => {
+      return response.schedules
+        .filter((scheduleItem) => {
+          return (
+            now < DateTime.fromISO(scheduleItem.start) &&
+            nowPlus24Hrs > DateTime.fromISO(scheduleItem.end)
+          );
+        })
+        .map((scheduleItem) => ({
+          name: scheduleItem.title,
+          start: scheduleItem.start,
+          end: scheduleItem.end,
+        }));
+    });
 }
 
 const mixesSchema = buildStrapiListSchema(

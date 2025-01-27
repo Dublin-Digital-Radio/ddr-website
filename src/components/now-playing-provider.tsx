@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 
-import { fetchShows, Show } from "@/api";
+import { fetchRadioCultLiveShow, Show } from "@/api";
 
 type Player = "stream-1" | "stream-2" | "mixcloud";
 
@@ -19,35 +19,29 @@ export const NowPlayingContext = createContext<{
   activePlayer?: Player;
   setActivePlayer: Dispatch<SetStateAction<Player | undefined>>;
   currentShow?: Show;
-  nextShow?: Show;
   mixcloudIframeUrl: string;
   setMixcloudIframeUrl: Dispatch<SetStateAction<string>>;
 }>({
   setActivePlayer: () => {},
   currentShow: undefined,
-  nextShow: undefined,
   mixcloudIframeUrl: defaultMixcloudIframeUrl,
   setMixcloudIframeUrl: () => {},
 });
 
 export function NowPlayingProvider({
-  initNextShow,
   children,
 }: {
-  initNextShow?: Show;
   children: React.ReactNode;
 }) {
   const [activePlayer, setActivePlayer] = useState<Player | undefined>();
   const [currentShow, setCurrentShow] = useState<Show | undefined>();
-  const [nextShow, setNextShow] = useState<Show | undefined>(initNextShow);
   const [mixcloudIframeUrl, setMixcloudIframeUrl] = useState(
     defaultMixcloudIframeUrl
   );
 
   const fetchAndSetCurrentShowTitle = async () => {
-    const shows = await fetchShows();
-    setCurrentShow(shows.current);
-    setNextShow(shows.next);
+    const liveShow = await fetchRadioCultLiveShow();
+    setCurrentShow(liveShow);
   };
 
   useEffect(() => {
@@ -63,7 +57,6 @@ export function NowPlayingProvider({
         activePlayer,
         setActivePlayer,
         currentShow,
-        nextShow,
         mixcloudIframeUrl,
         setMixcloudIframeUrl,
       }}

@@ -7,9 +7,9 @@ import { useContext } from "react";
 import { NowPlayingContext } from "./now-playing-provider";
 
 export function NowPlaying() {
-  const { currentShow, nextShow } = useContext(NowPlayingContext);
+  const { currentShow } = useContext(NowPlayingContext);
 
-  if (!currentShow || !nextShow) {
+  if (!currentShow) {
     return null;
   }
 
@@ -32,15 +32,18 @@ export function NowPlaying() {
             {currentShow.name}
           </h1>
         )}
-        <div className="text-lg font-bold">
-          {DateTime.fromISO(currentShow.starts).toLocaleString(
-            DateTime.TIME_24_SIMPLE
-          )}{" "}
-          -{" "}
-          {DateTime.fromISO(currentShow.ends).toLocaleString(
-            DateTime.TIME_24_SIMPLE
-          )}
-        </div>
+        {currentShow.starts && currentShow.ends ? (
+          <div className="text-lg font-bold">
+            {DateTime.fromISO(currentShow.starts).toLocaleString(
+              DateTime.TIME_24_SIMPLE
+            )}{" "}
+            -{" "}
+            {DateTime.fromISO(currentShow.ends).toLocaleString(
+              DateTime.TIME_24_SIMPLE
+            )}
+          </div>
+        ) : null}
+
         {currentShow.tagline ? <div>{currentShow.tagline}</div> : null}
       </div>
     </div>
