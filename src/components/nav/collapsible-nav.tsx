@@ -32,6 +32,7 @@ export function CollapsibleNav({ navItems }: { navItems: NavItem[] }) {
                     onClick={() => {
                       setDrawerOpen(false);
                     }}
+                    className="block p-2"
                   >
                     {text}
                   </Link>
