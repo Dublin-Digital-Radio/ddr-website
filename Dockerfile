@@ -12,6 +12,9 @@ WORKDIR /app
 # Set production environment
 ENV NODE_ENV="production"
 
+ARG NEXT_PUBLIC_RADIO_CULT_API_KEY
+ENV NEXT_PUBLIC_RADIO_CULT_API_KEY=${NEXT_PUBLIC_RADIO_CULT_API_KEY}
+
 
 # Throw-away build stage to reduce size of final image
 FROM base as build
