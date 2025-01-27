@@ -1,4 +1,3 @@
-import type { Metadata, ResolvingMetadata } from "next";
 import {
   faFacebook,
   faInstagram,
@@ -6,6 +5,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { Metadata, ResolvingMetadata } from "next";
 
 import { fetchShowInfo } from "@/api";
 
