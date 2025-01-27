@@ -93,7 +93,7 @@ export default async function Resident({
   }
 
   return (
-    <main>
+    <main className="flex flex-col md:flex-col lg:flex-row">
       <div>
         <img className="w-full" src={resident.image.data?.attributes.url} />
       </div>
