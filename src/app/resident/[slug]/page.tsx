@@ -1,3 +1,4 @@
+import type { Metadata, ResolvingMetadata } from "next";
 import {
   faFacebook,
   faInstagram,
@@ -7,6 +8,34 @@ import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { fetchShowInfo } from "@/api";
+
+type Props = {
+  params: Promise<{ slug: string }>;
+};
+
+export async function generateMetadata(
+  { params }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const resolvedParent = await parent;
+  const resident = await fetchShowInfo({ slug: (await params).slug });
+
+  if (!resident) {
+    return {
+      title: resolvedParent.title?.absolute,
+      description: resolvedParent.description,
+    };
+  }
+
+  return {
+    title: `${resident.name} | ${resolvedParent.title?.absolute}`,
+    openGraph: {
+      images: resident.image.data?.attributes.url
+        ? [resident.image.data.attributes.url]
+        : [],
+    },
+  };
+}
 
 function getSocialMediaUrl({
   value,
