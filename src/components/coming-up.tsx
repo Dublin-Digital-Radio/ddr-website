@@ -6,20 +6,20 @@ export async function ComingUp() {
   const next24HrsSchedule = await fetchRadioCultNext24HrsSchedule();
 
   return (
-    <div>
+    <div className="p-4">
       <h1 className="text-3xl md:text-5xl font-bold uppercase">Coming up</h1>
-      <ul>
-        {next24HrsSchedule.map((show) => (
-          <li key={`${show.name}${show.start}`}>
+      {next24HrsSchedule.map((show) => (
+        <div key={`${show.name}${show.start}`} className="flex">
+          <div className="pr-2">
             {DateTime.fromISO(show.start).toLocaleString(
               DateTime.TIME_24_SIMPLE
             )}{" "}
             -{" "}
             {DateTime.fromISO(show.end).toLocaleString(DateTime.TIME_24_SIMPLE)}{" "}
-            {show.name}
-          </li>
-        ))}
-      </ul>
+          </div>
+          <div className="flex-1">{show.name}</div>
+        </div>
+      ))}
     </div>
   );
 }

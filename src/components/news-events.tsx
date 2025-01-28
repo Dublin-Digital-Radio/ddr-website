@@ -3,7 +3,7 @@ import { fetchBlogPosts } from "@/api";
 export async function NewsEvents() {
   const blogPosts = await fetchBlogPosts();
   return (
-    <div>
+    <div className="p-4">
       <h1 className="text-3xl md:text-5xl font-bold uppercase">
         News + Events
       </h1>
