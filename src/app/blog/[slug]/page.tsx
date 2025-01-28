@@ -65,7 +65,10 @@ export default async function BlogPost({
       </div>
       <div className="p-4">
         <h1 className="text-3xl font-bold">{blogPost.attributes.title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: contentHtml }} />
+        <div
+          className="prose"
+          dangerouslySetInnerHTML={{ __html: contentHtml }}
+        />
       </div>
     </main>
   );
