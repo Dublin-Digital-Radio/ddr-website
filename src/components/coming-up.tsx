@@ -6,7 +6,7 @@ export async function ComingUp() {
   const next24HrsSchedule = await fetchRadioCultNext24HrsSchedule();
 
   return (
-    <div className="p-4">
+    <div>
       <h1 className="text-3xl md:text-5xl font-bold uppercase">Coming up</h1>
       {next24HrsSchedule.map((show) => (
         <div key={`${show.name}${show.start}`} className="flex">

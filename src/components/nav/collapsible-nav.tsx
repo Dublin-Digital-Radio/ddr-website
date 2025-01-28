@@ -23,7 +23,7 @@ export function CollapsibleNav({ navItems }: { navItems: NavItem[] }) {
         </button>
 
         {drawerOpen ? (
-          <div className="relative bg-white">
+          <div className="relative bg-black">
             <ul>
               {navItems.map(({ href, text }) => (
                 <li key={href}>

@@ -20,7 +20,7 @@ export function NowPlaying() {
           <img width={400} src={currentShow.imageUrl} />
         ) : null}
       </div>
-      <div className="p-4 md:pt-0">
+      <div className="md:pt-0">
         {currentShow.slug ? (
           <h1 className="text-3xl md:text-5xl font-bold uppercase underline">
             <Link href={`/resident/${currentShow.slug}`}>

@@ -19,9 +19,9 @@ export function Player() {
   }, [activePlayer]);
 
   return (
-    <div>
+    <div className="border-t-2 border-b-2 border-white md:px-8">
       {currentShow ? (
-        <div className="flex items-center pb-4">
+        <div className="flex items-center py-4">
           <button
             onClick={() => {
               if (player.current) {
@@ -39,7 +39,7 @@ export function Player() {
               <PlayIcon className="size-8" />
             )}
           </button>
-          <span>Live now: {currentShow.name}</span>
+          <span>ON AIR: {currentShow.name}</span>
           <audio
             ref={player}
             src="https://dublindigitalradio.out.airtime.pro/dublindigitalradio_a"

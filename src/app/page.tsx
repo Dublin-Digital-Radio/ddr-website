@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   return (
-    <main className="flex flex-col">
+    <main className="flex flex-col px-2 md:px-8">
       <div className="flex flex-col md:flex-row">
         <div className="flex-1 mb-4">
           <NowPlaying />

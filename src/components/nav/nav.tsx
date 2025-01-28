@@ -12,10 +12,6 @@ export interface NavItem {
 async function fetchNavItems(): Promise<NavItem[]> {
   return [
     {
-      href: "/",
-      text: "Home",
-    },
-    {
       href: "/schedule",
       text: "Schedule",
     },
@@ -41,17 +37,17 @@ export async function Nav() {
       <div className="md:hidden">
         <CollapsibleNav navItems={navItems} />
       </div>
-      <div className="hidden md:flex flex-row">
-        <div className="w-40 p-4 mr-10">
+      <div className="hidden md:flex flex-row md:px-8">
+        <div className="w-40 py-4 mr-10">
           <Link href="/">
-            <Image src={logo} alt="ddr logo" />
+            <Image className="h-8 w-auto" src={logo} alt="ddr logo" />
           </Link>
         </div>
-        <div className="flex-1 flex justify-end pt-8">
+        <div className="flex-1 flex justify-end py-4">
           <ul className="flex">
             {navItems.map(({ href, text }) => (
               <li key={href}>
-                <Link className="me-4 font-bold text-2xl uppercase" href={href}>
+                <Link className="me-8 font-bold" href={href}>
                   {text}
                 </Link>
               </li>
