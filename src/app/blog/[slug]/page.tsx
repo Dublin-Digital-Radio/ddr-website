@@ -57,7 +57,7 @@ export default async function BlogPost({
 
   return (
     <main className="flex flex-col md:flex-col lg:flex-row">
-      <div>
+      <div className="md:w-1/3 md:p-4">
         <img
           className="w-full"
           src={blogPost.attributes.image.data?.attributes.url}
