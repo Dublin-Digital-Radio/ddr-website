@@ -34,19 +34,21 @@ function buildStrapiListSchema<Schema extends z.ZodType>(
   });
 }
 
+const imageSchema = z.object({
+  data: z
+    .object({
+      attributes: z.object({
+        url: z.string(),
+      }),
+    })
+    .nullable(),
+});
+
 const cmsShowSchema = buildStrapiListSchema(
   z.object({
     name: z.string(),
     slug: z.string(),
-    image: z.object({
-      data: z
-        .object({
-          attributes: z.object({
-            url: z.string(),
-          }),
-        })
-        .nullable(),
-    }),
+    image: imageSchema,
     tagline: z.string().nullable(),
     instagram: z.string().nullable(),
     twitter: z.string().nullable(),
@@ -381,15 +383,7 @@ const residentsSchema = buildStrapiListSchema(
   z.object({
     name: z.string(),
     slug: z.string(),
-    image: z.object({
-      data: z
-        .object({
-          attributes: z.object({
-            url: z.string(),
-          }),
-        })
-        .nullable(),
-    }),
+    image: imageSchema,
   })
 );
 
@@ -434,22 +428,17 @@ export async function fetchResidents(params: { searchQuery?: string }) {
 
 const blogPostsSchema = buildStrapiListSchema(
   z.object({
+    slug: z.string(),
     title: z.string(),
-    image: z.object({
-      data: z
-        .object({
-          attributes: z.object({
-            url: z.string(),
-          }),
-        })
-        .nullable(),
-    }),
+    content: z.string(),
+    date: z.string(),
+    image: imageSchema,
   })
 );
 
 export async function fetchBlogPosts() {
   return await fetch(
-    "https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=4&sort=date:desc&filters[publishedAt][$null]=false&populate=*",
+    "https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=4&sort=date:desc&filters[publishedAt][$null]=false&filters[slug][$not][$eq]=&populate=*",
     { cache: "no-store" }
   )
     .then((response) => response.json())
@@ -458,5 +447,22 @@ export async function fetchBlogPosts() {
     })
     .then(({ data }) => {
       return data;
+    });
+}
+
+export async function fetchBlogPost({ slug }: { slug: string }) {
+  const searchParams = new URLSearchParams({
+    "filters[slug][$eq]": slug,
+    populate: "*",
+  });
+
+  return await fetch(`https://ddr-cms.fly.dev/api/blogs?${searchParams}`)
+    .then((response) => response.json())
+    .then((response) => blogPostsSchema.parse(response))
+    .then((response) => response.data)
+    .then((blogPostEntries) => {
+      if (blogPostEntries[0]) {
+        return blogPostEntries[0];
+      }
     });
 }

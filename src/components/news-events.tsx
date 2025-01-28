@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { fetchBlogPosts } from "@/api";
 
 export async function NewsEvents() {
@@ -20,7 +22,22 @@ export async function NewsEvents() {
                 </div>
               ) : null // TODO: Add fallback image
             }
-            <a className="text-xl font-bold">{blogPost.attributes.title}</a>
+            <div>
+              <Link
+                className="text-xl font-bold"
+                href={`/blog/${blogPost.attributes.slug}`}
+              >
+                {blogPost.attributes.title}
+              </Link>
+            </div>
+            <div>
+              <Link
+                className="underline"
+                href={`/blog/${blogPost.attributes.slug}`}
+              >
+                Read more
+              </Link>
+            </div>
           </div>
         ))}
       </div>
