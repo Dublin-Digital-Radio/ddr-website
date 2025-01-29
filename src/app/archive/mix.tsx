@@ -27,7 +27,7 @@ export function Mix({ mix }: { mix: Mixes[number] }) {
         await widget.load(mix.attributes.url);
       }}
     >
-      <div className="flex flex-row m-2 p-2 border">
+      <div className="flex flex-row my-2 p-2 border">
         <div className="w-16 flex justify-center">
           {mix.attributes.pictures ? (
             <img
