@@ -8,6 +8,9 @@ import { Show } from "@/api";
 
 import { NowPlayingContext } from "./now-playing-provider";
 
+const placeholderImageUrl =
+  "https://res.cloudinary.com/dhikr416c/image/upload/w_800,h_800/v1738153099/placeholder_rmxkui.jpg";
+
 export function NowPlaying({ initCurrentShow }: { initCurrentShow?: Show }) {
   const { currentShow = initCurrentShow } = useContext(NowPlayingContext);
 
@@ -18,9 +21,10 @@ export function NowPlaying({ initCurrentShow }: { initCurrentShow?: Show }) {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-1 md:pt-8">
-        {currentShow.imageUrl ? (
-          <img className="w-full" src={currentShow.imageUrl} />
-        ) : null}
+        <img
+          className="w-full"
+          src={currentShow.imageUrl ?? placeholderImageUrl}
+        />
       </div>
       <div className="flex-1 pt-4 md:pt-8 md:pl-8">
         {currentShow.slug ? (
