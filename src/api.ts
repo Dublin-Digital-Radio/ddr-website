@@ -2,6 +2,8 @@ import { decode } from "html-entities";
 import { DateTime } from "luxon";
 import { z } from "zod";
 
+import { debug } from "@/utils";
+
 function convertAirtimeToCmsShowName(airtimeShowName: string) {
   const trimmedAirtimeShowName = airtimeShowName
     ? decodeURIComponent(airtimeShowName)
@@ -72,6 +74,8 @@ type FetchShowInfoParams =
   | FetchShowInfoBySlugParams;
 
 export async function fetchShowInfo({ showName, slug }: FetchShowInfoParams) {
+  debug("fetchShowInfo");
+
   const searchParams = showName
     ? new URLSearchParams({
         "filters[name][$eqi]": showName,
@@ -161,6 +165,8 @@ const radioCultLiveShowSchema = z.object({
 });
 
 export async function fetchRadioCultLiveShow() {
+  debug("fetchRadioCultLiveShow");
+
   try {
     const radioCultLiveShow = await fetch(
       "https://api.radiocult.fm/api/station/dublin-digital-radio/schedule/live",
@@ -236,6 +242,8 @@ const dayNameSchema = z.union([
 ]);
 
 export async function fetchWeeklySchedule() {
+  debug("fetchWeeklySchedule");
+
   const response = await fetch(
     "https://dublindigitalradio.airtime.pro/api/week-info",
     { cache: "no-store" }
@@ -300,6 +308,8 @@ const radioCultScheduleSchema = z.object({
 });
 
 export async function fetchRadioCultNext24HrsSchedule() {
+  debug("fetchRadioCultNext24HrsSchedule");
+
   const now = DateTime.now();
   const nowPlus24Hrs = now.plus({ hours: 24 });
   const startDateTimestamp = now.toUTC();
@@ -362,6 +372,7 @@ function getSearchQueryParams(searchQuery: string) {
 }
 
 export async function fetchMixes(params: { searchQuery?: string }) {
+  debug("fetchMixes");
   // Using Strapi filters because the custom `/mixes/search` API is a bit broken
   // https://github.com/Dublin-Digital-Radio/ddr-cms/issues/5
   const url = `https://ddr-cms.fly.dev/api/mixes?${new URLSearchParams({
@@ -390,6 +401,8 @@ const residentsSchema = buildStrapiListSchema(
 export type Residents = z.infer<typeof residentsSchema>["data"];
 
 export async function fetchAllResidents() {
+  debug("fetchAllResidents");
+
   let allResidents: z.infer<typeof residentsSchema>["data"] = [];
   let currentPage = 1;
   let pageCount = 1;
@@ -414,6 +427,8 @@ export async function fetchAllResidents() {
 }
 
 export async function fetchResidents(params: { searchQuery?: string }) {
+  debug("fetchResidents");
+
   let currentPage = 1;
 
   return await fetch(
@@ -437,6 +452,8 @@ const blogPostsSchema = buildStrapiListSchema(
 );
 
 export async function fetchBlogPosts() {
+  debug("fetchBlogPosts");
+
   return await fetch(
     "https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=4&sort=date:desc&filters[publishedAt][$null]=false&filters[slug][$not][$eq]=&populate=*",
     { cache: "no-store" }
@@ -451,6 +468,8 @@ export async function fetchBlogPosts() {
 }
 
 export async function fetchBlogPost({ slug }: { slug: string }) {
+  debug("fetchBlogPost");
+
   const searchParams = new URLSearchParams({
     "filters[slug][$eq]": slug,
     populate: "*",
