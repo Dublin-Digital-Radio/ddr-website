@@ -4,10 +4,12 @@ import { DateTime } from "luxon";
 import Link from "next/link";
 import { useContext } from "react";
 
+import { Show } from "@/api";
+
 import { NowPlayingContext } from "./now-playing-provider";
 
-export function NowPlaying() {
-  const { currentShow } = useContext(NowPlayingContext);
+export function NowPlaying({ initCurrentShow }: { initCurrentShow?: Show }) {
+  const { currentShow = initCurrentShow } = useContext(NowPlayingContext);
 
   if (!currentShow) {
     return null;

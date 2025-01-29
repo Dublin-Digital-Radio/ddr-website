@@ -1,4 +1,5 @@
 // import { Carousel } from "@/components/carousel";
+import { fetchRadioCultLiveShow } from "@/api";
 import { ComingUp } from "@/components/coming-up";
 import { NewsEvents } from "@/components/news-events";
 import { NowPlaying } from "@/components/now-playing";
@@ -9,11 +10,13 @@ import { NowPlaying } from "@/components/now-playing";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
+  const currentShow = await fetchRadioCultLiveShow();
+
   return (
     <main className="flex flex-col px-2 md:px-8">
       <div className="flex flex-col md:flex-row md:pb-8">
         <div className="md:w-2/3 mb-4">
-          <NowPlaying />
+          <NowPlaying initCurrentShow={currentShow} />
         </div>
         {/* <Carousel /> */}
         <div className="flex-1 mb-4">
