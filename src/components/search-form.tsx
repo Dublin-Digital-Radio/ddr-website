@@ -39,7 +39,7 @@ export function SearchForm({
           type="text"
           value={searchQuery ?? ""}
           onChange={(event) => setSearchQuery(event.target.value)}
-          className="w-full border-black border-2 text-3xl"
+          className="w-full border-black border-2 text-3xl text-black"
           placeholder={placeholderText}
         />
       </div>
