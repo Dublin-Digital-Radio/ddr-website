@@ -1,3 +1,4 @@
+import { DateTime } from "luxon";
 import Link from "next/link";
 
 import { fetchBlogPosts } from "@/api";
@@ -20,6 +21,11 @@ export async function NewsEvents() {
                 </div>
               ) : null // TODO: Add fallback image
             }
+            <div className="md:py-4">
+              {DateTime.fromISO(blogPost.attributes.date).toLocaleString(
+                DateTime.DATE_MED
+              )}
+            </div>
             <div>
               <Link
                 className="text-xl font-bold"
