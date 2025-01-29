@@ -6,9 +6,7 @@ export async function NewsEvents() {
   const blogPosts = await fetchBlogPosts();
   return (
     <div>
-      <h1 className="text-3xl md:text-5xl font-bold uppercase">
-        News + Events
-      </h1>
+      <h1 className="text-3xl font-bold uppercase">News + Events</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {blogPosts.map((blogPost) => (
           <div key={blogPost.id} className="p-4">

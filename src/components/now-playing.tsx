@@ -15,25 +15,25 @@ export function NowPlaying() {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div>
+      <div className="flex-1 md:pt-8">
         {currentShow.imageUrl ? (
-          <img width={400} src={currentShow.imageUrl} />
+          <img className="w-full" src={currentShow.imageUrl} />
         ) : null}
       </div>
-      <div className="md:pt-0">
+      <div className="flex-1 pt-4 md:pt-8 md:pl-8">
         {currentShow.slug ? (
-          <h1 className="text-3xl md:text-5xl font-bold uppercase underline">
+          <h1 className="text-3xl md:text-2xl font-bold underline">
             <Link href={`/resident/${currentShow.slug}`}>
               {currentShow.name}
             </Link>
           </h1>
         ) : (
-          <h1 className="text-3xl md:text-5xl font-bold uppercase">
-            {currentShow.name}
+          <h1 className="text-3xl md:text-2xl font-bold">
+            LIVE NOW: {currentShow.name}
           </h1>
         )}
         {currentShow.starts && currentShow.ends ? (
-          <div className="text-lg font-bold">
+          <div className="font-bold">
             {DateTime.fromISO(currentShow.starts).toLocaleString(
               DateTime.TIME_24_SIMPLE
             )}{" "}

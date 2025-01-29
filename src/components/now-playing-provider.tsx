@@ -41,7 +41,12 @@ export function NowPlayingProvider({
 
   const fetchAndSetCurrentShowTitle = async () => {
     const liveShow = await fetchRadioCultLiveShow();
-    setCurrentShow(liveShow);
+    setCurrentShow({
+      ...liveShow,
+      name: "Afrogrunk",
+      imageUrl:
+        "http://res.cloudinary.com/dhikr416c/image/upload/v1599136152/whj0ihlzmakcjpid5m6a.jpg",
+    });
   };
 
   useEffect(() => {
