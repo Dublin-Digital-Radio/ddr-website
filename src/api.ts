@@ -36,6 +36,17 @@ function buildStrapiListSchema<Schema extends z.ZodType>(
   });
 }
 
+function buildStrapiEntrySchema<Schema extends z.ZodType>(
+  attributesSchema: Schema
+) {
+  return z.object({
+    data: z.object({
+      id: z.number(),
+      attributes: attributesSchema,
+    }),
+  });
+}
+
 const imageSchema = z.object({
   data: z
     .object({
@@ -445,4 +456,19 @@ export async function fetchBlogPost({ slug }: { slug: string }) {
         return blogPostEntries[0];
       }
     });
+}
+
+const radioCultToggleSchema = buildStrapiEntrySchema(
+  z.object({
+    radioculttoggle: z.boolean(),
+  })
+);
+
+export async function fetchRadioCultToggle() {
+  debug("fetchRadioCultToggle");
+
+  return await fetch("https://ddr-cms.fly.dev/api/radio-cult-toggle")
+    .then((response) => response.json())
+    .then((response) => radioCultToggleSchema.parse(response))
+    .then((response) => response.data.attributes.radioculttoggle);
 }

@@ -6,7 +6,7 @@ import { useContext, useEffect, useRef } from "react";
 import { NowPlayingContext } from "./now-playing-provider";
 
 export function Player() {
-  const { currentShow, activePlayer, setActivePlayer } =
+  const { scheduledStreamUrl, currentShow, activePlayer, setActivePlayer } =
     useContext(NowPlayingContext);
   const player = useRef<HTMLAudioElement>(null);
 
@@ -21,7 +21,7 @@ export function Player() {
   return (
     <div className="border-t-2 border-b-2 border-white md:px-8">
       <div className="flex items-center py-4">
-        {currentShow ? (
+        {currentShow && scheduledStreamUrl ? (
           <>
             <button
               onClick={() => {
@@ -41,10 +41,7 @@ export function Player() {
               )}
             </button>
             <span>ON AIR: {currentShow.name}</span>
-            <audio
-              ref={player}
-              src="https://dublindigitalradio.out.airtime.pro/dublindigitalradio_a"
-            />
+            <audio ref={player} src={scheduledStreamUrl} />
           </>
         ) : (
           <div>
