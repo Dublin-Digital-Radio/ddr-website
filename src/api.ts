@@ -221,82 +221,6 @@ export async function fetchRadioCultLiveShow() {
   }
 }
 
-const dayName = {
-  monday: "Monday",
-  tuesday: "Tuesday",
-  wednesday: "Wednesday",
-  thursday: "Thursday",
-  friday: "Friday",
-  saturday: "Saturday",
-  sunday: "Sunday",
-};
-
-const dayNameSchema = z.union([
-  z.literal("monday"),
-  z.literal("tuesday"),
-  z.literal("wednesday"),
-  z.literal("thursday"),
-  z.literal("friday"),
-  z.literal("saturday"),
-  z.literal("sunday"),
-]);
-
-export async function fetchWeeklySchedule() {
-  debug("fetchWeeklySchedule");
-
-  const response = await fetch(
-    "https://dublindigitalradio.airtime.pro/api/week-info",
-    { cache: "no-store" }
-  ).then((response) => response.json());
-  const retrievedSchedule = z
-    .object({
-      monday: z.array(airtimeShowSchema),
-      tuesday: z.array(airtimeShowSchema),
-      wednesday: z.array(airtimeShowSchema),
-      thursday: z.array(airtimeShowSchema),
-      friday: z.array(airtimeShowSchema),
-      saturday: z.array(airtimeShowSchema),
-      sunday: z.array(airtimeShowSchema),
-      nextmonday: z.array(airtimeShowSchema),
-      nexttuesday: z.array(airtimeShowSchema),
-      nextwednesday: z.array(airtimeShowSchema),
-      nextthursday: z.array(airtimeShowSchema),
-      nextfriday: z.array(airtimeShowSchema),
-      nextsaturday: z.array(airtimeShowSchema),
-      nextsunday: z.array(airtimeShowSchema),
-    })
-    .parse(response);
-
-  const today = DateTime.now();
-  const todayDayName = dayNameSchema.parse(today.weekdayLong.toLowerCase());
-  let schedule: {
-    dayName: string;
-    shows: AirtimeShow[];
-  }[] = [];
-  schedule[0] = {
-    dayName: dayName[todayDayName],
-    shows: retrievedSchedule[todayDayName].map(formatShow),
-  };
-  let hasPassedSunday = todayDayName === "sunday";
-  let currentDayName: z.infer<typeof dayNameSchema>;
-  // Convert the returned schedule format to next 7 days schedule
-  for (let i = 1; i < 7; i++) {
-    currentDayName = dayNameSchema.parse(
-      today.plus({ days: i }).weekdayLong.toLowerCase()
-    );
-    schedule[i] = {
-      dayName: dayName[currentDayName],
-      shows: hasPassedSunday
-        ? retrievedSchedule[`next${currentDayName}`].map(formatShow)
-        : retrievedSchedule[currentDayName].map(formatShow),
-    };
-
-    if (currentDayName === "sunday") hasPassedSunday = true;
-  }
-
-  return schedule;
-}
-
 const radioCultScheduleSchema = z.object({
   schedules: z.array(
     z.object({
@@ -339,6 +263,58 @@ export async function fetchRadioCultNext24HrsSchedule() {
           end: scheduleItem.end,
         }));
     });
+}
+
+export async function fetchRadioCultWeeklySchedule() {
+  debug("fetchRadioCultWeeklySchedule");
+
+  let parsedSchedule: {
+    dayName: string;
+    shows: Show[];
+  }[] = [];
+  const startDateTimestamp = DateTime.now().startOf("day").toUTC();
+  const endDateTimestamp = DateTime.now()
+    .plus({ days: 7 })
+    .endOf("day")
+    .toUTC();
+
+  await fetch(
+    `https://api.radiocult.fm/api/station/dublin-digital-radio/schedule?startDate=${startDateTimestamp}&endDate=${endDateTimestamp}`,
+    {
+      headers: {
+        "x-api-key": process.env.NEXT_PUBLIC_RADIO_CULT_API_KEY ?? "",
+      },
+    }
+  )
+    .then((response) => response.json())
+    .then((response) => radioCultScheduleSchema.parse(response))
+    .then((response) => {
+      let currentDay = DateTime.now().startOf("day");
+      for (let i = 0; i < 7; i++) {
+        const currentDayEnd = currentDay.endOf("day");
+        parsedSchedule[i] = {
+          dayName: currentDay.weekdayLong,
+          shows: response.schedules
+            .filter((show) => {
+              const showStartDateTime = DateTime.fromISO(show.start);
+              return (
+                (showStartDateTime > currentDay ||
+                  showStartDateTime === currentDay) &&
+                showStartDateTime < currentDayEnd
+              );
+            })
+            .map((show) => ({
+              name: show.title,
+              starts: show.start,
+              ends: show.end,
+            })),
+        };
+
+        currentDay = currentDay.plus({ hours: 24 });
+      }
+    });
+
+  return parsedSchedule;
 }
 
 const mixesSchema = buildStrapiListSchema(
