@@ -122,11 +122,11 @@ export default async function Resident({
   }
 
   return (
-    <main className="flex flex-col md:flex-col lg:flex-row">
-      <div>
+    <main className="flex flex-col md:flex-col lg:flex-row md:px-8">
+      <div className="lg:w-1/3">
         <img className="w-full" src={resident.image.data?.attributes.url} />
       </div>
-      <div className="p-4">
+      <div className="p-4 lg:w-1/3">
         <h1 className="text-3xl font-bold">{resident.name}</h1>
         {resident.tagline ? <p className="pb-4">{resident.tagline}</p> : null}
         <ExternalLink type="instagram" value={resident.instagram} />
