@@ -174,6 +174,7 @@ export async function fetchRadioCultLiveShow() {
         headers: {
           "x-api-key": process.env.NEXT_PUBLIC_RADIO_CULT_API_KEY ?? "",
         },
+        cache: "no-store",
       }
     )
       .then((response) => response.json())
