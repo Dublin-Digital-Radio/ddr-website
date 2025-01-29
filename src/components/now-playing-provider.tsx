@@ -18,7 +18,7 @@ const defaultMixcloudIframeUrl =
 export const NowPlayingContext = createContext<{
   activePlayer?: Player;
   setActivePlayer: Dispatch<SetStateAction<Player | undefined>>;
-  currentShow?: Show;
+  currentShow?: Show | null;
   mixcloudIframeUrl: string;
   setMixcloudIframeUrl: Dispatch<SetStateAction<string>>;
 }>({
@@ -34,7 +34,7 @@ export function NowPlayingProvider({
   children: React.ReactNode;
 }) {
   const [activePlayer, setActivePlayer] = useState<Player | undefined>();
-  const [currentShow, setCurrentShow] = useState<Show | undefined>();
+  const [currentShow, setCurrentShow] = useState<Show | null | undefined>();
   const [mixcloudIframeUrl, setMixcloudIframeUrl] = useState(
     defaultMixcloudIframeUrl
   );

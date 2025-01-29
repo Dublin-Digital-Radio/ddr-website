@@ -20,34 +20,39 @@ export function Player() {
 
   return (
     <div className="border-t-2 border-b-2 border-white md:px-8">
-      {currentShow ? (
-        <div className="flex items-center py-4">
-          <button
-            onClick={() => {
-              if (player.current) {
-                if (activePlayer === "stream-1") {
-                  setActivePlayer(undefined);
-                } else {
-                  setActivePlayer("stream-1");
+      <div className="flex items-center py-4">
+        {currentShow ? (
+          <>
+            <button
+              onClick={() => {
+                if (player.current) {
+                  if (activePlayer === "stream-1") {
+                    setActivePlayer(undefined);
+                  } else {
+                    setActivePlayer("stream-1");
+                  }
                 }
-              }
-            }}
-          >
-            {activePlayer === "stream-1" ? (
-              <PauseIcon className="size-8" />
-            ) : (
-              <PlayIcon className="size-8" />
-            )}
-          </button>
-          <span>ON AIR: {currentShow.name}</span>
-          <audio
-            ref={player}
-            src="https://dublindigitalradio.out.airtime.pro/dublindigitalradio_a"
-          />
-        </div>
-      ) : (
-        <noscript>Enable JavaScript to enable the player.</noscript>
-      )}
+              }}
+            >
+              {activePlayer === "stream-1" ? (
+                <PauseIcon className="size-8" />
+              ) : (
+                <PlayIcon className="size-8" />
+              )}
+            </button>
+            <span>ON AIR: {currentShow.name}</span>
+            <audio
+              ref={player}
+              src="https://dublindigitalradio.out.airtime.pro/dublindigitalradio_a"
+            />
+          </>
+        ) : (
+          <div>
+            {currentShow === null ? <span>Station offline. </span> : null}
+            <noscript>Enable JavaScript to enable the player.</noscript>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

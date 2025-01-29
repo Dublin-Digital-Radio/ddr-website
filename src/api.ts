@@ -183,7 +183,7 @@ export async function fetchRadioCultLiveShow() {
       })
       .then((response) => {
         if (response.result.status === "offAir") {
-          return undefined;
+          return null;
         } else if (response.result.status === "defaultPlaylist") {
           return {
             title: response.result.content.name,
@@ -214,11 +214,11 @@ export async function fetchRadioCultLiveShow() {
         tagline: currentShowResident?.tagline ?? radioCultLiveShow.tagline,
       };
     } else {
-      return undefined;
+      return null;
     }
   } catch (error) {
     console.log(error);
-    return undefined;
+    return null;
   }
 }
 
