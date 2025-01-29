@@ -12,7 +12,7 @@ export default async function Residents({
     : await fetchAllResidents();
 
   return (
-    <main>
+    <main className="md:px-8">
       <ResidentList initResidents={residents} />
     </main>
   );

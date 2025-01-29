@@ -19,7 +19,7 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
   }, []);
 
   return (
-    <div>
+    <div className="pt-4">
       <div className="mb-4">
         <SearchForm
           placeholderText="Search ddr. residents"
@@ -34,8 +34,15 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
           .map((resident) => (
             <div key={resident.attributes.name}>
               <Link href={`/resident/${resident.attributes.slug}`}>
-                <img src={resident.attributes.image.data?.attributes.url} />
-                {resident.attributes.name}
+                <div className="aspect-square">
+                  <img
+                    src={resident.attributes.image.data?.attributes.url}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="underline py-2 md:text-2xl md:py-4">
+                  {resident.attributes.name}
+                </div>
               </Link>
             </div>
           ))}
