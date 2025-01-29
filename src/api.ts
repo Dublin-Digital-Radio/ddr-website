@@ -112,22 +112,6 @@ export async function fetchShowInfo({ showName, slug }: FetchShowInfoParams) {
     });
 }
 
-const airtimeShowSchema = z.object({
-  name: z.string(),
-  starts: z.string(),
-  ends: z.string(),
-});
-
-function formatShow(airtimeShow: z.infer<typeof airtimeShowSchema>) {
-  return {
-    name: airtimeShow.name,
-    starts: airtimeShow.starts.replace(" ", "T"),
-    ends: airtimeShow.ends.replace(" ", "T"),
-  };
-}
-
-type AirtimeShow = ReturnType<typeof formatShow>;
-
 export interface Show {
   name: string;
   starts?: string;

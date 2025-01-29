@@ -11,7 +11,11 @@ import { NowPlayingContext } from "./now-playing-provider";
 const placeholderImageUrl =
   "https://res.cloudinary.com/dhikr416c/image/upload/w_800,h_800/v1738153099/placeholder_rmxkui.jpg";
 
-export function NowPlaying({ initCurrentShow }: { initCurrentShow?: Show }) {
+export function NowPlaying({
+  initCurrentShow,
+}: {
+  initCurrentShow?: Show | null;
+}) {
   const { currentShow = initCurrentShow } = useContext(NowPlayingContext);
 
   if (!currentShow) {
