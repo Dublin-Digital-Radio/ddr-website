@@ -24,6 +24,10 @@ async function fetchNavItems(): Promise<NavItem[]> {
       text: "Residents",
     },
     {
+      href: "/about",
+      text: "About",
+    },
+    {
       href: "/chat-box",
       text: "Chat Box",
     },
