@@ -33,6 +33,10 @@ export default async function RootLayout({
         <NowPlayingProvider>
           <Player />
           {children}
+          <div className="text-xs text-center mt-[60px] md:text-left md:px-8">
+            Dublin Digital Radio (ddr.) Company registration number: 681238
+          </div>
+          <div className="h-[80px]" />
           <MixcloudPlayer />
         </NowPlayingProvider>
       </body>

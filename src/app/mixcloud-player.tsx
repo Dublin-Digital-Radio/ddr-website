@@ -20,7 +20,11 @@ export function MixcloudPlayer() {
   }, [activePlayer]);
 
   return (
-    <div className="fixed bottom-0 w-full h-[60px]">
+    <div
+      className={`fixed bottom-0 w-full ${
+        activePlayer === "mixcloud" && "h-[60px]"
+      }`}
+    >
       <iframe
         id="mixcloud-iframe"
         frameBorder="0"
