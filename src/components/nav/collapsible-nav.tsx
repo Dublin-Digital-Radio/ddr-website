@@ -25,19 +25,21 @@ export function CollapsibleNav({ navItems }: { navItems: NavItem[] }) {
         {drawerOpen ? (
           <div className="relative bg-black">
             <ul>
-              {navItems.map(({ href, text }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    onClick={() => {
-                      setDrawerOpen(false);
-                    }}
-                    className="block p-2"
-                  >
-                    {text}
-                  </Link>
-                </li>
-              ))}
+              {[{ href: "/", text: "Home" }, ...navItems].map(
+                ({ href, text }) => (
+                  <li key={href}>
+                    <Link
+                      href={href}
+                      onClick={() => {
+                        setDrawerOpen(false);
+                      }}
+                      className="block p-2"
+                    >
+                      {text}
+                    </Link>
+                  </li>
+                )
+              )}
             </ul>
           </div>
         ) : null}
