@@ -111,11 +111,10 @@ function ExternalLink({
   );
 }
 
-export default async function Resident({
-  params,
-}: {
-  params: { slug: string };
+export default async function Resident(props: {
+  params: Promise<{ slug: string }>;
 }) {
+  const params = await props.params;
   const resident = await fetchShowInfo({ slug: params.slug });
   if (!resident) {
     return null;

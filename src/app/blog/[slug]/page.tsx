@@ -36,11 +36,10 @@ export async function generateMetadata(
   };
 }
 
-export default async function BlogPost({
-  params,
-}: {
-  params: { slug: string };
+export default async function BlogPost(props: {
+  params: Promise<{ slug: string }>;
 }) {
+  const params = await props.params;
   const blogPost = await fetchBlogPost({ slug: params.slug });
   if (!blogPost) {
     return null;
