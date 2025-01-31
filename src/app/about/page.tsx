@@ -4,11 +4,27 @@ export default function About() {
   return (
     <main className="pt-4 md:px-8">
       <div className="max-w-prose">
+        <h1 className="text-3xl font-bold">Support</h1>
+        <p className="pb-4">
+          ddr. is non-commercial, independent and completely member funded. Your
+          monthly subscription fee helps keep ddr. on air and going forwards.
+          Members can participate in the running of ddr. and help steer the
+          station future direction. (There&apos;s also sometimes some free or
+          discounted tickets to ddr. events!). We use Patreon to handle
+          memberships, you can sign up here{" "}
+          <a
+            className="underline"
+            href="https://www.patreon.com/dublindigitalradio"
+          >
+            https://www.patreon.com/dublindigitalradio
+          </a>
+        </p>
         <h1 className="text-3xl font-bold">About ddr.</h1>
         <p className="pb-4">
-          Dublin Digital Radio (ddr) is an award-winning, online community radio
-          station representing a wealth of alternative music, art and politics
-          across Ireland, since 2016. ddr is wholly funded by its members (via{" "}
+          Dublin Digital Radio (ddr.) is an award-winning, online community
+          radio station representing a wealth of alternative music, art and
+          politics across Ireland, since 2016. ddr. is wholly funded by its
+          members (via{" "}
           <a
             className="underline"
             href="https://www.patreon.com/dublindigitalradio"
@@ -20,7 +36,7 @@ export default function About() {
           democratically by its growing community.
         </p>
         <p className="pb-4">
-          ddr aims to provide a radical alternative to established media, a
+          ddr. aims to provide a radical alternative to established media, a
           station supported by and for its community. ddr&apos;s programming
           reflects this aim, having run radio events in support of{" "}
           <Link
@@ -51,20 +67,20 @@ export default function About() {
           .
         </p>
         <p className="pb-4">
-          ddr is an avid supporter of experimental and left-of-field music &
+          ddr. is an avid supporter of experimental and left-of-field music &
           creatives, supporting local scenes directly through our events and
           programming.
         </p>
         <p className="pb-4">
-          ddr wishes to empower its members to use radio as a tool for
+          ddr. wishes to empower its members to use radio as a tool for
           collective collaboration & cooperation, horizontal skill share and
           support. The station holds Open Studio events as an introduction to
           radio making, contributing to this collaborative culture.
         </p>
         <p>
-          ddr is based in Dublin city centre but is open to all; however, the
+          ddr. is based in Dublin city centre but is open to all; however, the
           station nurtures connections with collectives across the island and
-          internationally to further its aims and values. Read the ddr Guiding
+          internationally to further its aims and values. Read the ddr. Guiding
           Principles below.
         </p>
         <h1 className="text-3xl font-bold mt-4">ddr. Guiding Principles</h1>
