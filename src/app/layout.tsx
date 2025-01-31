@@ -26,9 +26,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head></head>
-      <body className="font-chivo bg-black text-white">
+      <body className="font-chivo bg-ddr-black text-white">
         <NowPlayingProvider>
-          <div className="sticky top-0 bg-black">
+          <div className="sticky top-0 bg-ddr-black">
             <Nav />
             <Player />
           </div>
