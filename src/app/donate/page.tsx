@@ -1,9 +1,4 @@
-import {
-  faFacebook,
-  faInstagram,
-  faTwitter,
-  faPatreon,
-} from "@fortawesome/free-brands-svg-icons";
+import { faPatreon } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function Donate() {
@@ -22,9 +17,9 @@ export default function Donate() {
       <p className="pb-4">
         We want you to become part of ddr. and subscribe to our vision of what
         our online radio station can be. We want more music, more voices, and
-        more events and for that we need your support. Whether it's a monthly
-        subscription or a one-off payment, your help is vital in ddr. unleashing
-        its full potential.
+        more events and for that we need your support. Whether it&apos;s a
+        monthly subscription or a one-off payment, your help is vital in ddr.
+        unleashing its full potential.
       </p>
       <div>
         <a
