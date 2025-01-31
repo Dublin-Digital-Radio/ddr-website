@@ -381,7 +381,12 @@ export async function fetchAllResidents() {
 
   do {
     await fetch(
-      `https://ddr-cms.fly.dev/api/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&sort=name&populate=*`
+      `https://ddr-cms.fly.dev/api/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&sort=name&populate=*`,
+      {
+        next: {
+          revalidate: 3600,
+        },
+      }
     )
       .then((response) => response.json())
       .then((json) => residentsSchema.parse(json))
