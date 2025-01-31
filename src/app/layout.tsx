@@ -27,9 +27,11 @@ export default async function RootLayout({
     <html lang="en">
       <head></head>
       <body className="font-chivo bg-black text-white">
-        <Nav />
         <NowPlayingProvider>
-          <Player />
+          <div className="sticky top-0 bg-black">
+            <Nav />
+            <Player />
+          </div>
           {children}
           <div className="text-xs text-center mt-[60px] md:text-left md:px-8">
             Dublin Digital Radio (ddr.) Company registration number: 681238

@@ -37,7 +37,7 @@ async function fetchNavItems(): Promise<NavItem[]> {
 export async function Nav() {
   const navItems = await fetchNavItems();
   return (
-    <div>
+    <>
       <div className="md:hidden">
         <CollapsibleNav navItems={navItems} />
       </div>
@@ -59,6 +59,6 @@ export async function Nav() {
           </ul>
         </div>
       </div>
-    </div>
+    </>
   );
 }
