@@ -30,7 +30,7 @@ export function NowPlaying({
           src={currentShow.imageUrl ?? placeholderImageUrl}
         />
       </div>
-      <div className="flex-1 pt-4 md:pt-8 md:pl-8">
+      <div className="flex-1 pt-4 md:pt-8 md:pl-8 md:pr-8">
         {currentShow.slug ? (
           <h1 className="text-3xl md:text-2xl font-bold underline">
             <Link href={`/resident/${currentShow.slug}`}>
