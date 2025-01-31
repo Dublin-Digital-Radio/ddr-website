@@ -1,4 +1,3 @@
-// import { Carousel } from "@/components/carousel";
 import { fetchRadioCultLiveShow } from "@/api";
 import { ComingUp } from "@/components/coming-up";
 import { NewsEvents } from "@/components/news-events";
@@ -18,7 +17,6 @@ export default async function Home() {
         <div className="md:w-2/3 mb-4">
           <NowPlaying initCurrentShow={currentShow} />
         </div>
-        {/* <Carousel /> */}
         <div className="flex-1 mb-4">
           <ComingUp />
         </div>
