@@ -16,6 +16,11 @@ export const metadata: Metadata = {
   title: "Dublin Digital Radio",
   description:
     "Dublin Digital Radio is an online digital radio station dedicated to providing a quality platform for the various communities striving to create a socially and culturally progressive city.",
+  openGraph: {
+    images: [
+      "https://res.cloudinary.com/dhikr416c/image/upload/w_800,h_800/v1738153099/placeholder_rmxkui.jpg",
+    ],
+  },
 };
 
 export default async function RootLayout({
