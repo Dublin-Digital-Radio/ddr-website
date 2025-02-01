@@ -23,7 +23,7 @@ export async function NewsEvents() {
             }
             <div className="md:py-4">
               {DateTime.fromISO(blogPost.attributes.date).toLocaleString(
-                DateTime.DATE_MED
+                DateTime.DATE_MED,
               )}
             </div>
             <div>

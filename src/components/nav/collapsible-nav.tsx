@@ -38,7 +38,7 @@ export function CollapsibleNav({ navItems }: { navItems: NavItem[] }) {
                       {text}
                     </Link>
                   </li>
-                )
+                ),
               )}
             </ul>
           </div>

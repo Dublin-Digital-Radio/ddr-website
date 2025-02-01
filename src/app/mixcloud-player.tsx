@@ -11,7 +11,7 @@ export function MixcloudPlayer() {
     if (activePlayer && activePlayer !== "mixcloud") {
       // @ts-expect-error TODO: Add Mixcloud as global var
       const widget = window.Mixcloud.PlayerWidget(
-        document.getElementById("mixcloud-iframe")
+        document.getElementById("mixcloud-iframe"),
       );
       widget.ready.then(() => {
         widget.pause();
