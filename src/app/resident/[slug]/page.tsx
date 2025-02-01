@@ -15,7 +15,7 @@ type Props = {
 
 export async function generateMetadata(
   { params }: Props,
-  parent: ResolvingMetadata
+  parent: ResolvingMetadata,
 ): Promise<Metadata> {
   const resolvedParent = await parent;
   const resident = await fetchShowInfo({ slug: (await params).slug });
@@ -82,17 +82,17 @@ function ExternalLink({
           detectAtSign: true,
         })
       : type === "twitter"
-      ? getSocialMediaUrl({
-          value,
-          hostname: "twitter.com",
-          detectAtSign: true,
-        })
-      : type === "facebook"
-      ? getSocialMediaUrl({
-          value,
-          hostname: "facebook.com",
-        })
-      : value;
+        ? getSocialMediaUrl({
+            value,
+            hostname: "twitter.com",
+            detectAtSign: true,
+          })
+        : type === "facebook"
+          ? getSocialMediaUrl({
+              value,
+              hostname: "facebook.com",
+            })
+          : value;
 
   const icon = {
     instagram: faInstagram,

@@ -41,7 +41,7 @@ export function NowPlayingProvider({
   const [activePlayer, setActivePlayer] = useState<Player | undefined>();
   const [currentShow, setCurrentShow] = useState<Show | null | undefined>();
   const [mixcloudIframeUrl, setMixcloudIframeUrl] = useState(
-    defaultMixcloudIframeUrl
+    defaultMixcloudIframeUrl,
   );
 
   const fetchAndSetCurrentShowTitle = async () => {

@@ -45,11 +45,11 @@ export function NowPlaying({
         {currentShow.starts && currentShow.ends ? (
           <div className="font-bold">
             {DateTime.fromISO(currentShow.starts).toLocaleString(
-              DateTime.TIME_24_SIMPLE
+              DateTime.TIME_24_SIMPLE,
             )}{" "}
             -{" "}
             {DateTime.fromISO(currentShow.ends).toLocaleString(
-              DateTime.TIME_24_SIMPLE
+              DateTime.TIME_24_SIMPLE,
             )}
           </div>
         ) : null}

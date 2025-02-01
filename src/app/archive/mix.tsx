@@ -10,7 +10,7 @@ export function Mix({ mix }: { mix: Mixes[number] }) {
     useContext(NowPlayingContext);
 
   const mixcloudIframeUrl = `https://www.mixcloud.com/widget/iframe/?feed=${encodeURIComponent(
-    mix.attributes.url
+    mix.attributes.url,
   )}&hide_cover=1&mini=1&light=1&autoplay=1`;
   return (
     <a
@@ -21,7 +21,7 @@ export function Mix({ mix }: { mix: Mixes[number] }) {
         setMixcloudIframeUrl(mixcloudIframeUrl);
         // @ts-expect-error TODO: Add Mixcloud as global var
         const widget = window.Mixcloud.PlayerWidget(
-          document.getElementById("mixcloud-iframe")
+          document.getElementById("mixcloud-iframe"),
         );
         await widget.ready;
         await widget.load(mix.attributes.url);

@@ -38,7 +38,7 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {residents
             ?.filter((resident) =>
-              Boolean(resident.attributes.image.data?.attributes.url)
+              Boolean(resident.attributes.image.data?.attributes.url),
             )
             .map((resident) => (
               <div key={resident.attributes.name}>

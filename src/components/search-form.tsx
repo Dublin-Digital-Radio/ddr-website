@@ -17,7 +17,7 @@ export function SearchForm({
       setSearchQuery(event.state.searchQuery);
       onSubmit(event.state.searchQuery ?? undefined);
     },
-    [onSubmit]
+    [onSubmit],
   );
 
   useEffect(() => {

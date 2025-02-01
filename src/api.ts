@@ -15,14 +15,14 @@ function convertAirtimeToCmsShowName(airtimeShowName: string) {
 }
 
 function buildStrapiListSchema<Schema extends z.ZodType>(
-  attributesSchema: Schema
+  attributesSchema: Schema,
 ) {
   return z.object({
     data: z.array(
       z.object({
         id: z.number(),
         attributes: attributesSchema,
-      })
+      }),
     ),
     meta: z.object({
       pagination: z.object({
@@ -37,7 +37,7 @@ function buildStrapiListSchema<Schema extends z.ZodType>(
 }
 
 function buildStrapiEntrySchema<Schema extends z.ZodType>(
-  attributesSchema: Schema
+  attributesSchema: Schema,
 ) {
   return z.object({
     data: z.object({
@@ -67,7 +67,7 @@ const cmsShowSchema = buildStrapiListSchema(
     twitter: z.string().nullable(),
     facebook: z.string().nullable(),
     website: z.string().nullable(),
-  })
+  }),
 );
 
 interface FetchShowInfoByNameParams {
@@ -93,11 +93,11 @@ export async function fetchShowInfo({ showName, slug }: FetchShowInfoParams) {
         populate: "*",
       })
     : slug
-    ? new URLSearchParams({
-        "filters[slug][$eqi]": slug,
-        populate: "*",
-      })
-    : undefined;
+      ? new URLSearchParams({
+          "filters[slug][$eqi]": slug,
+          populate: "*",
+        })
+      : undefined;
 
   if (!searchParams) {
     return undefined;
@@ -170,7 +170,7 @@ export async function fetchRadioCultLiveShow() {
           "x-api-key": process.env.NEXT_PUBLIC_RADIO_CULT_API_KEY ?? "",
         },
         cache: "no-store",
-      }
+      },
     )
       .then((response) => response.json())
       .then((response) => {
@@ -223,7 +223,7 @@ const radioCultScheduleSchema = z.object({
       title: z.string(),
       start: z.string(),
       end: z.string(),
-    })
+    }),
   ),
 });
 
@@ -241,7 +241,7 @@ export async function fetchRadioCultNext24HrsSchedule() {
       headers: {
         "x-api-key": process.env.NEXT_PUBLIC_RADIO_CULT_API_KEY ?? "",
       },
-    }
+    },
   )
     .then((response) => response.json())
     .then((response) => radioCultScheduleSchema.parse(response))
@@ -280,7 +280,7 @@ export async function fetchRadioCultWeeklySchedule() {
       headers: {
         "x-api-key": process.env.NEXT_PUBLIC_RADIO_CULT_API_KEY ?? "",
       },
-    }
+    },
   )
     .then((response) => response.json())
     .then((response) => radioCultScheduleSchema.parse(response))
@@ -322,7 +322,7 @@ const mixesSchema = buildStrapiListSchema(
         "320wx320h": z.string(),
       })
       .optional(),
-  })
+  }),
 );
 
 export type Mixes = z.infer<typeof mixesSchema>["data"];
@@ -334,12 +334,15 @@ function getSearchQueryParams(searchQuery: string) {
   } else if (terms.length === 1 && terms[0]) {
     return { "filters[name][$containsi]": terms[0] };
   } else {
-    return terms.reduce((acc, term, index) => {
-      return {
-        ...acc,
-        [`filters[$or][0][${index}][name][$containsi]`]: term,
-      };
-    }, {} as Record<string, string>);
+    return terms.reduce(
+      (acc, term, index) => {
+        return {
+          ...acc,
+          [`filters[$or][0][${index}][name][$containsi]`]: term,
+        };
+      },
+      {} as Record<string, string>,
+    );
   }
 }
 
@@ -367,7 +370,7 @@ const residentsSchema = buildStrapiListSchema(
     name: z.string(),
     slug: z.string(),
     image: imageSchema,
-  })
+  }),
 );
 
 export type Residents = z.infer<typeof residentsSchema>["data"];
@@ -386,7 +389,7 @@ export async function fetchAllResidents() {
         next: {
           revalidate: 3600,
         },
-      }
+      },
     )
       .then((response) => response.json())
       .then((json) => residentsSchema.parse(json))
@@ -409,7 +412,7 @@ export async function fetchResidents(params: { searchQuery?: string }) {
   let currentPage = 1;
 
   return await fetch(
-    `https://ddr-cms.fly.dev/api/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&filters[name][$containsi]=${params.searchQuery}&sort=name&populate=*`
+    `https://ddr-cms.fly.dev/api/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&filters[name][$containsi]=${params.searchQuery}&sort=name&populate=*`,
   )
     .then((response) => response.json())
     .then((json) => residentsSchema.parse(json))
@@ -425,7 +428,7 @@ const blogPostsSchema = buildStrapiListSchema(
     content: z.string(),
     date: z.string(),
     image: imageSchema,
-  })
+  }),
 );
 
 export async function fetchBlogPosts() {
@@ -433,7 +436,7 @@ export async function fetchBlogPosts() {
 
   return await fetch(
     "https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=4&sort=date:desc&filters[publishedAt][$null]=false&filters[slug][$not][$eq]=&populate=*",
-    { cache: "no-store" }
+    { cache: "no-store" },
   )
     .then((response) => response.json())
     .then((json) => {
@@ -466,7 +469,7 @@ export async function fetchBlogPost({ slug }: { slug: string }) {
 const radioCultToggleSchema = buildStrapiEntrySchema(
   z.object({
     radioculttoggle: z.boolean(),
-  })
+  }),
 );
 
 export async function fetchRadioCultToggle() {

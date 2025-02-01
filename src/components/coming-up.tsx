@@ -12,7 +12,7 @@ export async function ComingUp() {
         <div key={`${show.name}${show.start}`} className="flex">
           <div className="pr-2 md:py-2">
             {DateTime.fromISO(show.start).toLocaleString(
-              DateTime.TIME_24_SIMPLE
+              DateTime.TIME_24_SIMPLE,
             )}{" "}
             -{" "}
             {DateTime.fromISO(show.end).toLocaleString(DateTime.TIME_24_SIMPLE)}{" "}
