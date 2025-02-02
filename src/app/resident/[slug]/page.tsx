@@ -13,6 +13,22 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
+const cloudinaryPrefix = "https://res.cloudinary.com/dhikr416c/image/upload";
+
+function getCloudinaryOptimizedImageUrl(
+  url: string,
+  options: {
+    width: number;
+    height: number;
+  },
+) {
+  if (url.startsWith(cloudinaryPrefix)) {
+    return `${cloudinaryPrefix}/c_fill,w_${options.width},h_${options.height}/${url.replace(cloudinaryPrefix, "")}`;
+  } else {
+    return url;
+  }
+}
+
 export async function generateMetadata(
   { params }: Props,
   parent: ResolvingMetadata,
@@ -31,7 +47,12 @@ export async function generateMetadata(
     title: `${resident.name} | ${resolvedParent.title?.absolute}`,
     openGraph: {
       images: resident.image.data?.attributes.url
-        ? [resident.image.data.attributes.url]
+        ? [
+            getCloudinaryOptimizedImageUrl(resident.image.data.attributes.url, {
+              width: 800,
+              height: 800,
+            }),
+          ]
         : [],
     },
   };
