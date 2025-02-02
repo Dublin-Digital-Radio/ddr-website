@@ -22,10 +22,13 @@ function getCloudinaryOptimizedImageUrl(
     height: number;
   },
 ) {
-  if (url.startsWith(cloudinaryPrefix)) {
-    return `${cloudinaryPrefix}f_auto,c_fill,w_${options.width},h_${options.height}/${url.replace(cloudinaryPrefix, "")}`;
+  const httpsUrl = url.startsWith("http://")
+    ? `https://${url.replace("http://", "")}`
+    : url;
+  if (httpsUrl.startsWith(cloudinaryPrefix)) {
+    return `${cloudinaryPrefix}f_jpg,c_fill,w_${options.width},h_${options.height}/${httpsUrl.replace(cloudinaryPrefix, "")}`;
   } else {
-    return url;
+    return httpsUrl;
   }
 }
 
