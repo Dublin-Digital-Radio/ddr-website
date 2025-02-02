@@ -13,7 +13,7 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-const cloudinaryPrefix = "https://res.cloudinary.com/dhikr416c/image/upload";
+const cloudinaryPrefix = "https://res.cloudinary.com/dhikr416c/image/upload/";
 
 function getCloudinaryOptimizedImageUrl(
   url: string,
@@ -23,7 +23,7 @@ function getCloudinaryOptimizedImageUrl(
   },
 ) {
   if (url.startsWith(cloudinaryPrefix)) {
-    return `${cloudinaryPrefix}/c_fill,w_${options.width},h_${options.height}/${url.replace(cloudinaryPrefix, "")}`;
+    return `${cloudinaryPrefix}f_auto,c_fill,w_${options.width},h_${options.height}/${url.replace(cloudinaryPrefix, "")}`;
   } else {
     return url;
   }
