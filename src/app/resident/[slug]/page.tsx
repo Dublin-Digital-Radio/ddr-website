@@ -9,6 +9,8 @@ import type { Metadata, ResolvingMetadata } from "next";
 
 import { fetchShowInfo } from "@/api";
 
+import { Playlist } from "./playlist";
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -156,6 +158,9 @@ export default async function Resident(props: {
         <ExternalLink type="twitter" value={resident.twitter} />
         <ExternalLink type="facebook" value={resident.facebook} />
         <ExternalLink type="website" value={resident.website} />
+      </div>
+      <div className="p-4 lg:w-1/3">
+        <Playlist showName={resident.name} />
       </div>
     </main>
   );

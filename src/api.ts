@@ -480,3 +480,73 @@ export async function fetchRadioCultToggle() {
     .then((response) => radioCultToggleSchema.parse(response))
     .then((response) => response.data.attributes.radioculttoggle);
 }
+
+const mixcloudPlaylistsSchema = z.object({
+  data: z.array(
+    z.object({
+      name: z.string(),
+      slug: z.string(),
+    }),
+  ),
+  paging: z.object({
+    next: z.string().optional(),
+  }),
+});
+
+const initialLoadPlaylistURL =
+  "https://api.mixcloud.com/DublinDigitalRadio/playlists/?limit=100";
+
+export async function fetchAllMixcloudPlaylists() {
+  debug("fetchAllMixcloudPlaylists");
+
+  let url = initialLoadPlaylistURL;
+  let pageNumber = 0;
+  const playlists = [];
+  while (url && pageNumber < 10) {
+    const results = await fetch(url, {
+      next: {
+        revalidate: 86400,
+      },
+    })
+      .then((response) => response.json())
+      .then((response) => mixcloudPlaylistsSchema.parse(response));
+    playlists.push(...results.data);
+
+    url = results.paging.next ?? "";
+    pageNumber++;
+  }
+  return playlists;
+}
+
+const mixcloudPlaylistMixesSchema = z.object({
+  data: z.array(
+    z.object({
+      key: z.string(),
+      name: z.string(),
+      url: z.string(),
+      created_time: z.string(),
+      pictures: z
+        .object({
+          medium: z.string().optional(),
+        })
+        .optional(),
+    }),
+  ),
+});
+
+export type MixcloudMixes = z.infer<typeof mixcloudPlaylistMixesSchema>["data"];
+
+export async function fetchMixcloudPlaylistMixes(slug: string) {
+  debug("fetchMixcloudPlaylistMixes");
+
+  return fetch(
+    `https://api.mixcloud.com/DublinDigitalRadio/playlists/${slug}/cloudcasts/?limit=100`,
+  )
+    .then((response) => response.json())
+    .then((response) => mixcloudPlaylistMixesSchema.parse(response))
+    .then((response) =>
+      response.data.sort((mixA, mixB) =>
+        mixA.created_time < mixB.created_time ? 1 : -1,
+      ),
+    );
+}
