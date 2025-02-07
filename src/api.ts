@@ -184,7 +184,8 @@ export async function fetchRadioCultLiveShow() {
             title: response.result.content.name,
             starts: undefined,
             ends: undefined,
-            tagline: response.result.metadata.title,
+            tagline:
+              "ddr. listeners' favourites. Give a shout out to your favourite show in the chat box to add it to the playlist.",
           };
         } else {
           return {
