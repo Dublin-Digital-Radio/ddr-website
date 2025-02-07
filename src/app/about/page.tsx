@@ -139,7 +139,7 @@ export default function About() {
           <li>
             Pitch a radio show:{" "}
             <Link
-              href="https://forms.gle/2D8JMzpw9NoYwcXu8"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSfMxuramVeFqp3dHTaRjOJ7wr940eVcYYOLsEtqFymykPUugw/viewform"
               className="underline"
             >
               ddr. Show Application Form
