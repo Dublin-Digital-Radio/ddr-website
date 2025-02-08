@@ -12,11 +12,14 @@ export function Player() {
 
   useEffect(() => {
     if (activePlayer === "stream-1") {
-      player.current?.play();
+      player.current = new Audio(
+        `${scheduledStreamUrl}?nocache=${Math.random().toString(36)}`,
+      );
+      player.current.play();
     } else {
       player.current?.pause();
     }
-  }, [activePlayer]);
+  }, [activePlayer, scheduledStreamUrl]);
 
   return (
     <div className="border-t-2 border-b-2 border-white md:px-8">
@@ -25,12 +28,10 @@ export function Player() {
           <>
             <button
               onClick={() => {
-                if (player.current) {
-                  if (activePlayer === "stream-1") {
-                    setActivePlayer(undefined);
-                  } else {
-                    setActivePlayer("stream-1");
-                  }
+                if (activePlayer === "stream-1") {
+                  setActivePlayer(undefined);
+                } else {
+                  setActivePlayer("stream-1");
                 }
               }}
             >
@@ -41,7 +42,6 @@ export function Player() {
               )}
             </button>
             <span>ON AIR: {currentShow.name}</span>
-            <audio ref={player} src={scheduledStreamUrl} />
           </>
         ) : (
           <div>
