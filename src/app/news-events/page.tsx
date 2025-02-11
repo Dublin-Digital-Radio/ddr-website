@@ -3,24 +3,23 @@ import Link from "next/link";
 
 import { fetchBlogPosts } from "@/api";
 
-export async function NewsEvents() {
-  const blogPosts = await fetchBlogPosts(4);
+export default async function Blog() {
+  const blogPosts = await fetchBlogPosts();
   return (
-    <div>
-      <h1 className="text-3xl font-bold uppercase">News + Events</h1>
+    <main className="md:px-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {blogPosts.map((blogPost) => (
           <div key={blogPost.id} className="p-4">
-            {
-              blogPost.attributes.image.data?.attributes.url ? (
-                <div className="aspect-square">
-                  <img
-                    className="w-full h-full object-contain"
-                    src={blogPost.attributes.image.data.attributes.url}
-                  />
-                </div>
-              ) : null // TODO: Add fallback image
-            }
+            <div className="aspect-square">
+              <img
+                className="w-full h-full object-contain"
+                src={
+                  blogPost.attributes.image.data?.attributes.url ??
+                  "https://res.cloudinary.com/dhikr416c/image/upload/c_fill/v1739178229/logo_8c790367f0.png"
+                }
+              />
+            </div>
+
             <div className="md:py-4">
               {DateTime.fromISO(blogPost.attributes.date).toLocaleString(
                 DateTime.DATE_MED,
@@ -45,6 +44,6 @@ export async function NewsEvents() {
           </div>
         ))}
       </div>
-    </div>
+    </main>
   );
 }

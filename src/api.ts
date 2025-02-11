@@ -432,11 +432,11 @@ const blogPostsSchema = buildStrapiListSchema(
   }),
 );
 
-export async function fetchBlogPosts() {
+export async function fetchBlogPosts(pageSize = 20) {
   debug("fetchBlogPosts");
 
   return await fetch(
-    "https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=4&sort=date:desc&filters[publishedAt][$null]=false&filters[slug][$not][$eq]=&populate=*",
+    `https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=${pageSize}&sort=date:desc&filters[publishedAt][$null]=false&filters[slug][$not][$eq]=&populate=*`,
     { cache: "no-store" },
   )
     .then((response) => response.json())
