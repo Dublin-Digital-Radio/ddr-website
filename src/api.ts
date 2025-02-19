@@ -551,3 +551,21 @@ export async function fetchMixcloudPlaylistMixes(slug: string) {
       ),
     );
 }
+
+const liveEventStreamConfigSchema = buildStrapiEntrySchema(
+  z.object({
+    Title: z.string(),
+    description: z.string().optional(),
+    playerEnabled: z.boolean(),
+    url: z.string().nullable(),
+  }),
+);
+
+export async function fetchLiveEventStreamConfig() {
+  debug("fetchLiveEventStreamConfig");
+
+  return await fetch("https://ddr-cms.fly.dev/api/live-stream-config")
+    .then((response) => response.json())
+    .then((response) => liveEventStreamConfigSchema.parse(response))
+    .then((response) => response.data.attributes);
+}
