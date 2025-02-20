@@ -5,6 +5,7 @@ import { useCallback, useState } from "react";
 
 import { fetchAllResidents, fetchResidents, Residents } from "@/api";
 import { SearchForm } from "@/components/search-form";
+import { getCloudinaryOptimizedImageUrl } from "@/utils";
 
 export function ResidentList({ initResidents }: { initResidents: Residents }) {
   const [loading, setLoading] = useState(false);
@@ -45,7 +46,13 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
                 <Link href={`/resident/${resident.attributes.slug}`}>
                   <div className="aspect-square">
                     <img
-                      src={resident.attributes.image.data?.attributes.url}
+                      src={getCloudinaryOptimizedImageUrl(
+                        resident.attributes.image.data?.attributes.url!,
+                        {
+                          width: 800,
+                          height: 800,
+                        },
+                      )}
                       className="w-full h-full object-cover"
                     />
                   </div>

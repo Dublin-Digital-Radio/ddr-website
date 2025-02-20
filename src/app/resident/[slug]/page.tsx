@@ -8,31 +8,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { Metadata, ResolvingMetadata } from "next";
 
 import { fetchShowInfo } from "@/api";
+import { getCloudinaryOptimizedImageUrl } from "@/utils";
 
 import { Playlist } from "./playlist";
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
-
-const cloudinaryPrefix = "https://res.cloudinary.com/dhikr416c/image/upload/";
-
-function getCloudinaryOptimizedImageUrl(
-  url: string,
-  options: {
-    width: number;
-    height: number;
-  },
-) {
-  const httpsUrl = url.startsWith("http://")
-    ? `https://${url.replace("http://", "")}`
-    : url;
-  if (httpsUrl.startsWith(cloudinaryPrefix)) {
-    return `${cloudinaryPrefix}f_jpg,c_fill,w_${options.width},h_${options.height}/${httpsUrl.replace(cloudinaryPrefix, "")}`;
-  } else {
-    return httpsUrl;
-  }
-}
 
 export async function generateMetadata(
   { params }: Props,
@@ -149,7 +131,18 @@ export default async function Resident(props: {
   return (
     <main className="flex flex-col md:flex-col lg:flex-row md:px-8">
       <div className="lg:w-1/3">
-        <img className="w-full" src={resident.image.data?.attributes.url} />
+        {resident.image.data?.attributes.url ? (
+          <img
+            className="w-full"
+            src={getCloudinaryOptimizedImageUrl(
+              resident.image.data.attributes.url,
+              {
+                width: 800,
+                height: 800,
+              },
+            )}
+          />
+        ) : null}
       </div>
       <div className="p-4 lg:w-1/3">
         <h1 className="text-3xl font-bold">{resident.name}</h1>
