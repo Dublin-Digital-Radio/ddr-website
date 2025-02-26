@@ -569,3 +569,31 @@ export async function fetchLiveEventStreamConfig() {
     .then((response) => liveEventStreamConfigSchema.parse(response))
     .then((response) => response.data.attributes);
 }
+
+const DDR_CMS_ACCESS_TOKEN_KEY = "ddr_cms_access_token";
+
+export function getCmsAccessToken() {
+  if (process.env.NEXT_PUBLIC_DEV_DDR_CMS_ACCESS_TOKEN) {
+    return process.env.NEXT_PUBLIC_DEV_DDR_CMS_ACCESS_TOKEN;
+  }
+
+  return localStorage.getItem(DDR_CMS_ACCESS_TOKEN_KEY);
+}
+
+const meSchema = z.object({
+  username: z.string(),
+});
+
+export type CurrentResident = z.infer<typeof meSchema>;
+
+export async function fetchCurrentResident() {
+  debug("fetchCurrentResident");
+
+  return await fetch("https://ddr-cms.fly.dev/api/users/me", {
+    headers: {
+      Authorization: `Bearer ${getCmsAccessToken()}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((response) => meSchema.parse(response));
+}
