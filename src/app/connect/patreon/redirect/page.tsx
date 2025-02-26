@@ -1,6 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 export default function PatreonRedirect() {
   // This route corresponds to the CMS auth provider config at https://ddr-cms.fly.dev/admin/settings/users-permissions/providers.
@@ -19,5 +20,9 @@ export default function PatreonRedirect() {
     .then((response) => response.json())
     .then((response) => console.log("PatreonRedirect", response));
 
-  return <div>wat</div>;
+  return (
+    <Suspense>
+      <div>wat</div>
+    </Suspense>
+  );
 }
