@@ -15,7 +15,7 @@ function Content() {
   // Call https://ddr-cms.fly.dev/api/auth/patreon/callback here first with the access token to get JWT
 
   fetch(
-    `https://ddr-cms.fly.dev/api/auth/patreon/callback?accessToken=${accessToken}`,
+    `https://ddr-cms.fly.dev/api/auth/patreon/callback?access_token=${accessToken}`,
   )
     .then((response) => response.json())
     .then((response) => console.log("PatreonRedirect", response));
