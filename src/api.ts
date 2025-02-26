@@ -570,7 +570,7 @@ export async function fetchLiveEventStreamConfig() {
     .then((response) => response.data.attributes);
 }
 
-const DDR_CMS_ACCESS_TOKEN_KEY = "ddr_cms_access_token";
+export const DDR_CMS_ACCESS_TOKEN_KEY = "ddr_cms_access_token";
 
 export function getCmsAccessToken() {
   if (process.env.NEXT_PUBLIC_DEV_DDR_CMS_ACCESS_TOKEN) {
