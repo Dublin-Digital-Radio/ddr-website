@@ -11,11 +11,13 @@ export async function ComingUp() {
       {next24HrsSchedule.map((show) => (
         <div key={`${show.name}${show.start}`} className="flex">
           <div className="pr-2 md:py-2">
-            {DateTime.fromISO(show.start).toLocaleString(
-              DateTime.TIME_24_SIMPLE,
-            )}{" "}
+            {DateTime.fromISO(show.start)
+              .setZone("Europe/Dublin")
+              .toLocaleString(DateTime.TIME_24_SIMPLE)}{" "}
             -{" "}
-            {DateTime.fromISO(show.end).toLocaleString(DateTime.TIME_24_SIMPLE)}{" "}
+            {DateTime.fromISO(show.end)
+              .setZone("Europe/Dublin")
+              .toLocaleString(DateTime.TIME_24_SIMPLE)}{" "}
           </div>
           <div className="flex-1 md:py-2">{show.name}</div>
         </div>

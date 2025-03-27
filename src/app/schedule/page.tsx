@@ -20,13 +20,13 @@ export default async function Schedule() {
                 }
                 return (
                   <li key={`${show.name}${show.starts}`} className="md:py-2">
-                    {DateTime.fromISO(show.starts).toLocaleString(
-                      DateTime.TIME_24_SIMPLE,
-                    )}{" "}
+                    {DateTime.fromISO(show.starts)
+                      .setZone("Europe/Dublin")
+                      .toLocaleString(DateTime.TIME_24_SIMPLE)}{" "}
                     -{" "}
-                    {DateTime.fromISO(show.ends).toLocaleString(
-                      DateTime.TIME_24_SIMPLE,
-                    )}{" "}
+                    {DateTime.fromISO(show.ends)
+                      .setZone("Europe/Dublin")
+                      .toLocaleString(DateTime.TIME_24_SIMPLE)}{" "}
                     {show.name}
                   </li>
                 );
