@@ -65,7 +65,7 @@ export default async function BlogPost(props: {
       <div className="p-4">
         <h1 className="text-3xl font-bold">{blogPost.attributes.title}</h1>
         <div
-          className="prose break-words text-white"
+          className="prose prose-invert break-words"
           dangerouslySetInnerHTML={{ __html: contentHtml }}
         />
       </div>
