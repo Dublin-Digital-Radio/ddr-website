@@ -4,14 +4,21 @@ import { z } from "zod";
 
 import { debug } from "@/utils";
 
-function convertAirtimeToCmsShowName(airtimeShowName: string) {
-  const trimmedAirtimeShowName = airtimeShowName
-    ? decodeURIComponent(airtimeShowName)
+const alternatingCurrentSuffix = " ~ Alternating Current";
+
+function convertRadioCultToCmsShowName(radioCultShowName: string) {
+  const showNameWithoutAlternatingCurrentSuffix = radioCultShowName.endsWith(
+    alternatingCurrentSuffix,
+  )
+    ? radioCultShowName.replace(alternatingCurrentSuffix, "")
+    : radioCultShowName;
+  const trimmedRadioCultShowName = radioCultShowName
+    ? decodeURIComponent(showNameWithoutAlternatingCurrentSuffix)
         .split("|")
         .map((showNameFragment) => showNameFragment.trim())[0]
     : "";
 
-  return decode((trimmedAirtimeShowName ?? "").replace(/\s*\(R\)/, ""));
+  return decode((trimmedRadioCultShowName ?? "").replace(/\s*\(R\)/, ""));
 }
 
 function buildStrapiListSchema<Schema extends z.ZodType>(
@@ -198,7 +205,7 @@ export async function fetchRadioCultLiveShow() {
 
     if (radioCultLiveShow) {
       const currentShowResident = await fetchShowInfo({
-        showName: convertAirtimeToCmsShowName(radioCultLiveShow.title),
+        showName: convertRadioCultToCmsShowName(radioCultLiveShow.title),
       });
 
       return {
