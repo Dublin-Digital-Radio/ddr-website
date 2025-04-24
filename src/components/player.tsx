@@ -1,6 +1,10 @@
 "use client";
 
-import { PauseIcon, PlayIcon } from "@heroicons/react/24/solid";
+import {
+  InformationCircleIcon,
+  PauseIcon,
+  PlayIcon,
+} from "@heroicons/react/24/solid";
 import { useContext, useEffect, useRef } from "react";
 
 import { NowPlayingContext } from "./now-playing-provider";
@@ -10,6 +14,7 @@ export function Player() {
     scheduledStreamUrl,
     currentShow,
     liveEventStream,
+    liveEventStreamDialogRef,
     activePlayer,
     setActivePlayer,
   } = useContext(NowPlayingContext);
@@ -76,7 +81,28 @@ export function Player() {
                 <PlayIcon className="size-8" />
               )}
             </button>
-            <span>LIVE EVENT: {liveEventStream.title}</span>
+            <div className="flex">
+              <span>LIVE EVENT:&nbsp;</span>
+              {liveEventStream.description ? (
+                <a
+                  href="#"
+                  onClick={() => {
+                    liveEventStreamDialogRef?.current?.showModal();
+                    liveEventStreamDialogRef?.current?.scrollTo(0, 0);
+                  }}
+                  className="flex items-center"
+                >
+                  <span className="underline mr-1">
+                    {liveEventStream.title}
+                  </span>
+                  <span className="inline-block">
+                    <InformationCircleIcon className="size-6" />
+                  </span>
+                </a>
+              ) : (
+                liveEventStream.title
+              )}
+            </div>
           </>
         </div>
       ) : null}

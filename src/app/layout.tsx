@@ -5,6 +5,7 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import type { Metadata } from "next";
 import Script from "next/script";
 
+import { LiveEventStreamDialog } from "@/components/live-event-stream-dialog";
 import { Nav } from "@/components/nav/nav";
 import { NowPlayingProvider } from "@/components/now-playing-provider";
 import { Player } from "@/components/player";
@@ -43,6 +44,7 @@ export default async function RootLayout({
           </div>
           <div className="h-[80px]" />
           <MixcloudPlayer />
+          <LiveEventStreamDialog />
         </NowPlayingProvider>
       </body>
       <Script src="//widget.mixcloud.com/media/js/widgetApi.js" />

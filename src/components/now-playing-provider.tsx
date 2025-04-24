@@ -3,8 +3,10 @@
 import {
   createContext,
   Dispatch,
+  RefObject,
   SetStateAction,
   useEffect,
+  useRef,
   useState,
 } from "react";
 
@@ -37,6 +39,7 @@ export const NowPlayingContext = createContext<{
   setActivePlayer: Dispatch<SetStateAction<Player | undefined>>;
   currentShow?: Show | null;
   liveEventStream?: LiveEventStream;
+  liveEventStreamDialogRef?: RefObject<HTMLDialogElement | null>;
   mixcloudIframeUrl: string;
   setMixcloudIframeUrl: Dispatch<SetStateAction<string>>;
 }>({
@@ -60,6 +63,8 @@ export function NowPlayingProvider({
   const [mixcloudIframeUrl, setMixcloudIframeUrl] = useState(
     defaultMixcloudIframeUrl,
   );
+
+  const liveEventStreamDialogRef = useRef<HTMLDialogElement | null>(null);
 
   const fetchAndSetCurrentShowTitle = async () => {
     const liveShow = await fetchRadioCultLiveShow();
@@ -107,6 +112,7 @@ export function NowPlayingProvider({
         setActivePlayer,
         currentShow,
         liveEventStream,
+        liveEventStreamDialogRef,
         mixcloudIframeUrl,
         setMixcloudIframeUrl,
       }}
