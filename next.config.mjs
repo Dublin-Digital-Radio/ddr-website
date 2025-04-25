@@ -26,8 +26,7 @@ const nextConfig = {
     return [
       {
         source: "/alternating-current-2025/:path*",
-        destination:
-          "https://dublin-digital-radio.github.io/ac-2025-website/:path*/",
+        destination: "/alternating-current-2025/:path*/index.html",
       },
     ];
   },
