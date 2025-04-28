@@ -3,6 +3,7 @@ import createMDX from "@next/mdx";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   pageExtensions: ["mdx", "ts", "tsx"],
+  trailingSlash: false,
   async redirects() {
     return [
       {
@@ -26,7 +27,8 @@ const nextConfig = {
     return [
       {
         source: "/alternating-current-2025/:path*",
-        destination: "/alternating-current-2025/:path*/index.html",
+        destination:
+          "https://ac-2025-website.fly.dev/alternating-current-2025/:path*",
       },
     ];
   },

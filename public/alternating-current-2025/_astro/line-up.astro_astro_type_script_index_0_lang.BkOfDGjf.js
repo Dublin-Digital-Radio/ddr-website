@@ -1,1 +1,0 @@
-import{s as t}from"./artist-info-modal-controller.B1Jo0XAx.js";const s=document.querySelectorAll(".artist-info-button");s.forEach(e=>{e instanceof HTMLElement&&e.addEventListener("click",a=>{a.preventDefault(),e.dataset.artistName&&t({name:e.dataset.artistName,imageUrl:e.dataset.artistImageUrl,markdownDescription:e.dataset.artistDescription})})});
