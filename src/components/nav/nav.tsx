@@ -7,10 +7,16 @@ import logo from "./logo.png";
 export interface NavItem {
   href: string;
   text: string;
+  target?: string;
 }
 
 async function fetchNavItems(): Promise<NavItem[]> {
   return [
+    {
+      href: "/alternating-current-2025",
+      text: "Alternating Current 2025",
+      target: "_blank",
+    },
     {
       href: "/schedule",
       text: "Schedule",
@@ -53,9 +59,9 @@ export async function Nav() {
         </div>
         <div className="flex-1 flex justify-end py-4">
           <ul className="flex">
-            {navItems.map(({ href, text }) => (
+            {navItems.map(({ href, text, target }) => (
               <li key={href}>
-                <Link className="me-8 font-bold" href={href}>
+                <Link className="me-8 font-bold" href={href} target={target}>
                   {text}
                 </Link>
               </li>
