@@ -601,6 +601,12 @@ export async function fetchCurrentResident() {
       Authorization: `Bearer ${getCmsAccessToken()}`,
     },
   })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error();
+      }
+      return response;
+    })
     .then((response) => response.json())
     .then((response) => meSchema.parse(response));
 }

@@ -17,7 +17,11 @@ export default function ResidentHome() {
       // If no JWT, redirect to CMS to authenticate with Patreon and redirect back to /connect/patreon/redirect?access_token=<token>
       redirect("https://ddr-cms.fly.dev/api/connect/patreon");
     } else {
-      fetchCurrentResident().then((data) => setResident(data));
+      fetchCurrentResident()
+        .then((data) => setResident(data))
+        .catch(() => {
+          redirect("https://ddr-cms.fly.dev/api/connect/patreon");
+        });
     }
   }, []);
 
