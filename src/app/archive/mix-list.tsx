@@ -18,7 +18,7 @@ export function MixList({ initMixes }: { initMixes: Mixes }) {
   }, []);
 
   return (
-    <div className="pt-4">
+    <div>
       <SearchForm
         placeholderText="Search the ddr. archive"
         onSubmit={handleSubmit}

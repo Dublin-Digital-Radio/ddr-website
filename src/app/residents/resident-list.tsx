@@ -26,7 +26,7 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
   }, []);
 
   return (
-    <div className="pt-4">
+    <>
       <div className="mb-4">
         <SearchForm
           placeholderText="Search ddr. residents"
@@ -64,6 +64,6 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
             ))}
         </div>
       )}
-    </div>
+    </>
   );
 }

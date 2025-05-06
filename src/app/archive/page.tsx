@@ -1,4 +1,5 @@
 import { fetchMixes } from "@/api";
+import { PageContainer } from "@/components/page-container";
 
 import { MixList } from "./mix-list";
 
@@ -10,8 +11,8 @@ export default async function Archive(props: {
     searchQuery: searchParams.search,
   });
   return (
-    <main className="md:px-8">
+    <PageContainer>
       <MixList initMixes={mixes} />
-    </main>
+    </PageContainer>
   );
 }

@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type { Metadata, ResolvingMetadata } from "next";
 
 import { fetchShowInfo } from "@/api";
+import { PageContainer } from "@/components/page-container";
 import { getCloudinaryOptimizedImageUrl } from "@/utils";
 
 import { Playlist } from "./playlist";
@@ -129,32 +130,34 @@ export default async function Resident(props: {
   }
 
   return (
-    <main className="flex flex-col md:flex-col lg:flex-row md:px-8">
-      <div className="lg:w-1/3">
-        {resident.image.data?.attributes.url ? (
-          <img
-            className="w-full"
-            src={getCloudinaryOptimizedImageUrl(
-              resident.image.data.attributes.url,
-              {
-                width: 800,
-                height: 800,
-              },
-            )}
-          />
-        ) : null}
+    <PageContainer>
+      <div className="flex flex-col md:flex-col lg:flex-row">
+        <div className="lg:w-1/3">
+          {resident.image.data?.attributes.url ? (
+            <img
+              className="w-full"
+              src={getCloudinaryOptimizedImageUrl(
+                resident.image.data.attributes.url,
+                {
+                  width: 800,
+                  height: 800,
+                },
+              )}
+            />
+          ) : null}
+        </div>
+        <div className="p-4 lg:w-1/3">
+          <h1 className="text-3xl font-bold">{resident.name}</h1>
+          {resident.tagline ? <p className="pb-4">{resident.tagline}</p> : null}
+          <ExternalLink type="instagram" value={resident.instagram} />
+          <ExternalLink type="twitter" value={resident.twitter} />
+          <ExternalLink type="facebook" value={resident.facebook} />
+          <ExternalLink type="website" value={resident.website} />
+        </div>
+        <div className="p-4 lg:w-1/3">
+          <Playlist showName={resident.name} />
+        </div>
       </div>
-      <div className="p-4 lg:w-1/3">
-        <h1 className="text-3xl font-bold">{resident.name}</h1>
-        {resident.tagline ? <p className="pb-4">{resident.tagline}</p> : null}
-        <ExternalLink type="instagram" value={resident.instagram} />
-        <ExternalLink type="twitter" value={resident.twitter} />
-        <ExternalLink type="facebook" value={resident.facebook} />
-        <ExternalLink type="website" value={resident.website} />
-      </div>
-      <div className="p-4 lg:w-1/3">
-        <Playlist showName={resident.name} />
-      </div>
-    </main>
+    </PageContainer>
   );
 }

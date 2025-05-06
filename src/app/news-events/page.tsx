@@ -2,11 +2,12 @@ import { DateTime } from "luxon";
 import Link from "next/link";
 
 import { fetchBlogPosts } from "@/api";
+import { PageContainer } from "@/components/page-container";
 
 export default async function Blog() {
   const blogPosts = await fetchBlogPosts();
   return (
-    <main className="md:px-8">
+    <PageContainer>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         {blogPosts.map((blogPost) => (
           <div key={blogPost.id} className="p-4">
@@ -44,6 +45,6 @@ export default async function Blog() {
           </div>
         ))}
       </div>
-    </main>
+    </PageContainer>
   );
 }

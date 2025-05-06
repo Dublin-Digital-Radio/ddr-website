@@ -8,6 +8,7 @@ import {
   fetchCurrentResident,
   getCmsAccessToken,
 } from "@/api";
+import { PageContainer } from "@/components/page-container";
 
 export default function ResidentHome() {
   const [resident, setResident] = useState<CurrentResident>();
@@ -30,8 +31,8 @@ export default function ResidentHome() {
   }
 
   return (
-    <main>
+    <PageContainer>
       <div>{resident.username}</div>
-    </main>
+    </PageContainer>
   );
 }

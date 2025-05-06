@@ -7,6 +7,7 @@ import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 
 import { fetchBlogPost } from "@/api";
+import { PageContainer } from "@/components/page-container";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -55,20 +56,22 @@ export default async function BlogPost(props: {
   const contentHtml = processedContent.toString();
 
   return (
-    <main className="flex flex-col md:flex-col lg:flex-row">
-      <div className="md:w-1/3 md:p-4">
-        <img
-          className="w-full"
-          src={blogPost.attributes.image.data?.attributes.url}
-        />
+    <PageContainer>
+      <div className="flex flex-col md:flex-col lg:flex-row">
+        <div className="md:w-1/3 md:p-4">
+          <img
+            className="w-full"
+            src={blogPost.attributes.image.data?.attributes.url}
+          />
+        </div>
+        <div className="p-4">
+          <h1 className="text-3xl font-bold">{blogPost.attributes.title}</h1>
+          <div
+            className="prose prose-invert break-words"
+            dangerouslySetInnerHTML={{ __html: contentHtml }}
+          />
+        </div>
       </div>
-      <div className="p-4">
-        <h1 className="text-3xl font-bold">{blogPost.attributes.title}</h1>
-        <div
-          className="prose prose-invert break-words"
-          dangerouslySetInnerHTML={{ __html: contentHtml }}
-        />
-      </div>
-    </main>
+    </PageContainer>
   );
 }

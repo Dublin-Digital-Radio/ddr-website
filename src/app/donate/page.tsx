@@ -1,9 +1,11 @@
 import { faPatreon } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { PageContainer } from "@/components/page-container";
+
 export default function Donate() {
   return (
-    <main className="pt-8 md:px-8">
+    <PageContainer>
       <div className="h-60 lg:h-80">
         <iframe
           src="https://player.vimeo.com/video/234288938?color=ff4a4a&title=0&byline=0&portrait=0"
@@ -58,6 +60,6 @@ export default function Donate() {
           />
         </form>
       </div>
-    </main>
+    </PageContainer>
   );
 }

@@ -1,4 +1,5 @@
 import { fetchAllResidents, fetchResidents } from "@/api";
+import { PageContainer } from "@/components/page-container";
 
 import { ResidentList } from "./resident-list";
 
@@ -11,8 +12,8 @@ export default async function Residents(props: {
     : await fetchAllResidents();
 
   return (
-    <main className="md:px-8">
+    <PageContainer>
       <ResidentList initResidents={residents} />
-    </main>
+    </PageContainer>
   );
 }

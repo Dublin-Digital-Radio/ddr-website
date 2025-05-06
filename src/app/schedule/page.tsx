@@ -1,13 +1,14 @@
 import { DateTime } from "luxon";
 
 import { fetchRadioCultWeeklySchedule } from "@/api";
+import { PageContainer } from "@/components/page-container";
 
 export const dynamic = "force-dynamic";
 
 export default async function Schedule() {
   const schedule = await fetchRadioCultWeeklySchedule();
   return (
-    <main className="pt-4 md:px-8">
+    <PageContainer>
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
         {schedule.map((day) => (
           <div key={day.dayName} className="pb-4">
@@ -35,6 +36,6 @@ export default async function Schedule() {
           </div>
         ))}
       </div>
-    </main>
+    </PageContainer>
   );
 }

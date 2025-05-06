@@ -1,8 +1,10 @@
 import Link from "next/link";
 
+import { PageContainer } from "@/components/page-container";
+
 export default function About() {
   return (
-    <main className="pt-4 md:px-8">
+    <PageContainer>
       <div className="max-w-prose">
         <h1 className="text-3xl font-bold">Support</h1>
         <p className="pb-4">
@@ -192,6 +194,6 @@ export default function About() {
           - a European network of independent cultural and media organisations.
         </p>
       </div>
-    </main>
+    </PageContainer>
   );
 }

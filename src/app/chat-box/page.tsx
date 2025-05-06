@@ -3,6 +3,8 @@
 import WidgetBot from "@widgetbot/react-embed";
 import { useEffect, useState } from "react";
 
+import { PageContainer } from "@/components/page-container";
+
 export default function ChatBox() {
   const [ready, setReady] = useState(false);
   useEffect(() => {
@@ -14,8 +16,8 @@ export default function ChatBox() {
     return null;
   }
   return (
-    <main className="md:px-8">
-      <p className="py-2">
+    <PageContainer>
+      <p className="mb-2">
         Chat doesn&apos;t load?{" "}
         <a href="https://discord.gg/qpq6xvMKAC" className="underline">
           Open Discord directly.
@@ -29,6 +31,6 @@ export default function ChatBox() {
           height: "80vh",
         }}
       />
-    </main>
+    </PageContainer>
   );
 }
