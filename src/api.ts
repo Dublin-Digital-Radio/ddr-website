@@ -4,6 +4,9 @@ import { z } from "zod";
 
 import { debug } from "@/utils";
 
+export const cmsUrl =
+  process.env.NEXT_PUBLIC_DDR_CMS_URL || "https://ddr-cms.fly.dev/api";
+
 const alternatingCurrentSuffix = " ~ Alternating Current";
 
 function convertRadioCultToCmsShowName(radioCultShowName: string) {
@@ -110,7 +113,7 @@ export async function fetchShowInfo({ showName, slug }: FetchShowInfoParams) {
     return undefined;
   }
 
-  return await fetch(`https://ddr-cms.fly.dev/api/shows?${searchParams}`)
+  return await fetch(`${cmsUrl}/shows?${searchParams}`)
     .then((response) => response.json())
     .then((showInfoResponse) => cmsShowSchema.parse(showInfoResponse))
     .then((showInfoResponse) => showInfoResponse.data)
@@ -358,7 +361,7 @@ export async function fetchMixes(params: { searchQuery?: string }) {
   debug("fetchMixes");
   // Using Strapi filters because the custom `/mixes/search` API is a bit broken
   // https://github.com/Dublin-Digital-Radio/ddr-cms/issues/5
-  const url = `https://ddr-cms.fly.dev/api/mixes?${new URLSearchParams({
+  const url = `${cmsUrl}/mixes?${new URLSearchParams({
     "pagination[page]": "1",
     "pagination[pageSize]": "20",
     sort: "createdTime:desc",
@@ -392,7 +395,7 @@ export async function fetchAllResidents() {
 
   do {
     await fetch(
-      `https://ddr-cms.fly.dev/api/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&sort=name&populate=*`,
+      `${cmsUrl}/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&sort=name&populate=*`,
       {
         next: {
           revalidate: 3600,
@@ -420,7 +423,7 @@ export async function fetchResidents(params: { searchQuery?: string }) {
   let currentPage = 1;
 
   return await fetch(
-    `https://ddr-cms.fly.dev/api/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&filters[name][$containsi]=${params.searchQuery}&sort=name&populate=*`,
+    `${cmsUrl}/shows?pagination[page]=${currentPage}&pagination[pageSize]=100&filters[active][$eq]=true&filters[name][$containsi]=${params.searchQuery}&sort=name&populate=*`,
   )
     .then((response) => response.json())
     .then((json) => residentsSchema.parse(json))
@@ -443,7 +446,7 @@ export async function fetchBlogPosts(pageSize = 20) {
   debug("fetchBlogPosts");
 
   return await fetch(
-    `https://ddr-cms.fly.dev/api/blogs?pagination[pageSize]=${pageSize}&sort=date:desc&filters[publishedAt][$null]=false&filters[slug][$not][$eq]=&populate=*`,
+    `${cmsUrl}/blogs?pagination[pageSize]=${pageSize}&sort=date:desc&filters[publishedAt][$null]=false&filters[slug][$not][$eq]=&populate=*`,
     { cache: "no-store" },
   )
     .then((response) => response.json())
@@ -463,7 +466,7 @@ export async function fetchBlogPost({ slug }: { slug: string }) {
     populate: "*",
   });
 
-  return await fetch(`https://ddr-cms.fly.dev/api/blogs?${searchParams}`)
+  return await fetch(`${cmsUrl}/blogs?${searchParams}`)
     .then((response) => response.json())
     .then((response) => blogPostsSchema.parse(response))
     .then((response) => response.data)
@@ -483,7 +486,7 @@ const radioCultToggleSchema = buildStrapiEntrySchema(
 export async function fetchRadioCultToggle() {
   debug("fetchRadioCultToggle");
 
-  return await fetch("https://ddr-cms.fly.dev/api/radio-cult-toggle")
+  return await fetch(`${cmsUrl}/radio-cult-toggle`)
     .then((response) => response.json())
     .then((response) => radioCultToggleSchema.parse(response))
     .then((response) => response.data.attributes.radioculttoggle);
@@ -571,7 +574,7 @@ const liveEventStreamConfigSchema = buildStrapiEntrySchema(
 export async function fetchLiveEventStreamConfig() {
   debug("fetchLiveEventStreamConfig");
 
-  return await fetch("https://ddr-cms.fly.dev/api/live-stream-config")
+  return await fetch(`${cmsUrl}/live-stream-config`)
     .then((response) => response.json())
     .then((response) => liveEventStreamConfigSchema.parse(response))
     .then((response) => response.data.attributes);
@@ -580,10 +583,6 @@ export async function fetchLiveEventStreamConfig() {
 export const DDR_CMS_ACCESS_TOKEN_KEY = "ddr_cms_access_token";
 
 export function getCmsAccessToken() {
-  if (process.env.NEXT_PUBLIC_DEV_DDR_CMS_ACCESS_TOKEN) {
-    return process.env.NEXT_PUBLIC_DEV_DDR_CMS_ACCESS_TOKEN;
-  }
-
   return localStorage.getItem(DDR_CMS_ACCESS_TOKEN_KEY);
 }
 
@@ -591,12 +590,25 @@ const meSchema = z.object({
   username: z.string(),
 });
 
-export type CurrentResident = z.infer<typeof meSchema>;
+const myShowsSchema = z.object({
+  data: z.array(
+    z.object({
+      attributes: z.object({
+        name: z.string(),
+      }),
+    }),
+  ),
+});
+
+export type CurrentResident = {
+  user: z.infer<typeof meSchema>;
+  shows: z.infer<typeof myShowsSchema>["data"];
+};
 
 export async function fetchCurrentResident() {
   debug("fetchCurrentResident");
 
-  return await fetch("https://ddr-cms.fly.dev/api/users/me", {
+  const cmsUser = await fetch(`${cmsUrl}/users/me`, {
     headers: {
       Authorization: `Bearer ${getCmsAccessToken()}`,
     },
@@ -609,4 +621,23 @@ export async function fetchCurrentResident() {
     })
     .then((response) => response.json())
     .then((response) => meSchema.parse(response));
+
+  const cmsUserShows = await fetch(`${cmsUrl}/shows/mine`, {
+    headers: {
+      Authorization: `Bearer ${getCmsAccessToken()}`,
+    },
+  })
+    .then((response) => {
+      if (response.status !== 200) {
+        throw new Error();
+      }
+      return response;
+    })
+    .then((response) => response.json())
+    .then((response) => myShowsSchema.parse(response).data);
+
+  return {
+    user: cmsUser,
+    shows: cmsUserShows,
+  };
 }

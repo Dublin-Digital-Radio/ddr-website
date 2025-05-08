@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
+  cmsUrl,
   CurrentResident,
   fetchCurrentResident,
   getCmsAccessToken,
@@ -16,12 +17,18 @@ export default function ResidentHome() {
   useEffect(() => {
     if (!getCmsAccessToken()) {
       // If no JWT, redirect to CMS to authenticate with Patreon and redirect back to /connect/patreon/redirect?access_token=<token>
-      redirect("https://ddr-cms.fly.dev/api/connect/patreon");
+      redirect(`${cmsUrl}/connect/patreon`);
     } else {
       fetchCurrentResident()
-        .then((data) => setResident(data))
-        .catch(() => {
-          redirect("https://ddr-cms.fly.dev/api/connect/patreon");
+        .then(({ user, shows }) => {
+          setResident({
+            user,
+            shows,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+          redirect(`${cmsUrl}/connect/patreon`);
         });
     }
   }, []);
@@ -32,7 +39,14 @@ export default function ResidentHome() {
 
   return (
     <PageContainer>
-      <div>{resident.username}</div>
+      <form>
+        <div>{resident.user.username}</div>
+        <ul>
+          {resident.shows.map((show) => (
+            <li key={show.attributes.name}>{show.attributes.name}</li>
+          ))}
+        </ul>
+      </form>
     </PageContainer>
   );
 }
