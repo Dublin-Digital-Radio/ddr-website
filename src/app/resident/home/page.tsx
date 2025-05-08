@@ -10,6 +10,7 @@ import {
   getCmsAccessToken,
 } from "@/api";
 import { PageContainer } from "@/components/page-container";
+import { ShowEditor } from "@/components/show-editor";
 
 export default function ResidentHome() {
   const [resident, setResident] = useState<CurrentResident>();
@@ -39,14 +40,17 @@ export default function ResidentHome() {
 
   return (
     <PageContainer>
-      <form>
-        <div>{resident.user.username}</div>
-        <ul>
-          {resident.shows.map((show) => (
-            <li key={show.attributes.name}>{show.attributes.name}</li>
-          ))}
-        </ul>
-      </form>
+      <div className="px-4">
+        <h1 className="text-3xl font-bold mb-4">Your Patreon Account</h1>
+        <div className="mb-4">
+          <p>{resident.user.username}</p>
+          <p>{resident.user.email}</p>
+        </div>
+        <h1 className="text-3xl font-bold mb-4">Your Shows</h1>
+        {resident.shows.map((show) => (
+          <ShowEditor key={show.attributes.name} show={show} />
+        ))}
+      </div>
     </PageContainer>
   );
 }

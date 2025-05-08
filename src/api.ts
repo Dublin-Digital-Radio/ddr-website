@@ -588,21 +588,26 @@ export function getCmsAccessToken() {
 
 const meSchema = z.object({
   username: z.string(),
+  email: z.string(),
 });
 
 const myShowsSchema = z.object({
   data: z.array(
     z.object({
       attributes: z.object({
+        id: z.number(),
         name: z.string(),
+        tagline: z.string().nullable(),
       }),
     }),
   ),
 });
 
+export type MyShow = z.infer<typeof myShowsSchema>["data"][number];
+
 export type CurrentResident = {
   user: z.infer<typeof meSchema>;
-  shows: z.infer<typeof myShowsSchema>["data"];
+  shows: MyShow[];
 };
 
 export async function fetchCurrentResident() {
@@ -620,7 +625,9 @@ export async function fetchCurrentResident() {
       return response;
     })
     .then((response) => response.json())
-    .then((response) => meSchema.parse(response));
+    .then((response) => {
+      return meSchema.parse(response);
+    });
 
   const cmsUserShows = await fetch(`${cmsUrl}/shows/mine`, {
     headers: {
@@ -634,10 +641,26 @@ export async function fetchCurrentResident() {
       return response;
     })
     .then((response) => response.json())
-    .then((response) => myShowsSchema.parse(response).data);
+    .then((response) => {
+      return myShowsSchema.parse(response).data;
+    });
 
   return {
     user: cmsUser,
     shows: cmsUserShows,
   };
+}
+
+export async function updateResidentShow(
+  id: number,
+  show: MyShow["attributes"],
+) {
+  await fetch(`${cmsUrl}/shows/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getCmsAccessToken()}`,
+    },
+    body: JSON.stringify({ data: show }),
+  });
 }
