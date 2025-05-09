@@ -598,6 +598,15 @@ const myShowsSchema = z.object({
         id: z.number(),
         name: z.string(),
         tagline: z.string().nullable(),
+        image: z
+          .object({
+            formats: z.object({
+              medium: z.object({
+                url: z.string().nullable(),
+              }),
+            }),
+          })
+          .nullish(),
       }),
     }),
   ),
@@ -649,6 +658,16 @@ export async function fetchCurrentResident() {
     user: cmsUser,
     shows: cmsUserShows,
   };
+}
+
+export function uploadImage(formData: FormData) {
+  return fetch(`${cmsUrl}/upload`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${getCmsAccessToken()}`,
+    },
+    body: formData,
+  });
 }
 
 export async function updateResidentShow(
