@@ -598,6 +598,7 @@ const myShowsSchema = z.object({
         id: z.number(),
         name: z.string(),
         tagline: z.string().nullable(),
+        slug: z.string(),
         image: z
           .object({
             formats: z.object({
@@ -607,6 +608,10 @@ const myShowsSchema = z.object({
             }),
           })
           .nullish(),
+        website: z.string().nullable(),
+        instagram: z.string().nullable(),
+        facebook: z.string().nullable(),
+        twitter: z.string().nullable(),
       }),
     }),
   ),
