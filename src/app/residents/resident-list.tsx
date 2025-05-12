@@ -34,7 +34,7 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
         />
       </div>
       {loading ? (
-        <div>Loading...</div>
+        <div className="px-4">Loading...</div>
       ) : (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {residents
