@@ -13,11 +13,6 @@ export interface NavItem {
 async function fetchNavItems(): Promise<NavItem[]> {
   return [
     {
-      href: "/alternating-current-2025",
-      text: "Alternating Current 2025",
-      target: "_blank",
-    },
-    {
       href: "/schedule",
       text: "Schedule",
     },
