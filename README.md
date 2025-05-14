@@ -2,14 +2,15 @@ The ddr. website is a [Next.js](https://nextjs.org/) app.
 
 ## Getting Started
 
-- Set a Radio Cult API key in `.env.local`.
+1. Reach out to radio admins to request a Radio Cult API key.
+2. Create `.env.local` and add the API key as follows
 
   ```
   NEXT_PUBLIC_RADIO_CULT_API_KEY=your_api_key
   ```
 
-- `npm install`
-- `npm run dev`
+3. `npm install`
+4. `npm run dev`
 
 ## Deployment
 
