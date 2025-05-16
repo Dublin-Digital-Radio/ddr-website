@@ -1,5 +1,8 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { CollapsibleNav } from "./collapsible-nav";
 import logo from "./logo.png";
@@ -39,8 +42,19 @@ async function fetchNavItems(): Promise<NavItem[]> {
   ];
 }
 
-export async function Nav() {
-  const navItems = await fetchNavItems();
+export function Nav() {
+  const router = useRouter();
+  const pathname = usePathname(); 
+  const [navItems, setNavItems] = useState<NavItem[]>([]);
+
+  useEffect(() => {
+    async function loadNavItems() {
+      const items = await fetchNavItems();
+      setNavItems(items);
+    }
+    loadNavItems();
+  }, []);
+
   return (
     <>
       <div className="md:hidden">
@@ -54,9 +68,15 @@ export async function Nav() {
         </div>
         <div className="flex-1 flex justify-end py-4">
           <ul className="flex">
-            {navItems.map(({ href, text, target }) => (
+{navItems.map(({ href, text, target }) => (
               <li key={href}>
-                <Link className="me-8 font-bold" href={href} target={target}>
+                <Link
+                  className={`me-8 hover:underline ${
+                    pathname === href ? "underline" : ""
+                  }`}
+                  href={href}
+                  target={target}
+                >
                   {text}
                 </Link>
               </li>
