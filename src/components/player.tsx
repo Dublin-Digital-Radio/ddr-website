@@ -35,8 +35,8 @@ export function Player() {
   }, [activePlayer, liveEventStream?.url, scheduledStreamUrl]);
 
   return (
-    <div className=" md:px-8">
-      <div className="flex items-center py-4 border-t-2 border-b-2 border-white">
+    <div className="md:px-8">
+      <div className="flex items-center gap-2 px-2 md:px-0 py-4 border-t-2 border-b-2 border-white">
         {currentShow && scheduledStreamUrl ? (
           <>
             <button

@@ -34,7 +34,7 @@ export function SearchForm({
         window.history.pushState({ searchQuery }, "", `?search=${searchQuery}`);
       }}
     >
-      <div className="px-4 mb-2 md:w-1/3 md:pl-0">
+      <div className="mb-2 md:w-1/3 md:pl-0">
         <input
           type="text"
           value={searchQuery ?? ""}
@@ -43,7 +43,7 @@ export function SearchForm({
           placeholder={placeholderText}
         />
       </div>
-      <div className="flex px-4 md:w-1/3 md:pl-0">
+      <div className="flex md:w-1/3 md:pl-0">
         <div className="flex-1 pr-1">
           <button
             type="button"
