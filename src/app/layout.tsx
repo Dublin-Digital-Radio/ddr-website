@@ -34,7 +34,7 @@ export default async function RootLayout({
       <head></head>
       <body className="font-chivo bg-ddr-black text-white">
         <NowPlayingProvider>
-          <div className="sticky top-0 bg-ddr-black">
+          <div className="sticky z-10 top-0 bg-ddr-black">
             <Nav />
             <Player />
           </div>

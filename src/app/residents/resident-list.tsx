@@ -36,15 +36,15 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
       {loading ? (
         <div className="px-4">Loading...</div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="grid gap-2 md:gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {residents
             ?.filter((resident) =>
               Boolean(resident.attributes.image.data?.attributes.url),
             )
             .map((resident) => (
               <div key={resident.attributes.name}>
-                <Link href={`/resident/${resident.attributes.slug}`}>
-                  <div className="aspect-square">
+                <Link className="hover:underline" href={`/resident/${resident.attributes.slug}`}>
+                  <div className="aspect-square opacity-85 hover:opacity-100 transition duration-200 ease-out">
                     <img
                       src={getCloudinaryOptimizedImageUrl(
                         resident.attributes.image.data?.attributes.url!,
@@ -56,7 +56,7 @@ export function ResidentList({ initResidents }: { initResidents: Residents }) {
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="underline py-2 md:text-2xl md:py-4">
+                  <div className="py-2 md:text-2xl md:py-4">
                     {resident.attributes.name}
                   </div>
                 </Link>

@@ -1,3 +1,3 @@
 export function PageContainer({ children }: { children: React.ReactNode }) {
-  return <main className="pt-4 md:px-8">{children}</main>;
+  return <main className="pt-4 px-4 md:px-8">{children}</main>;
 }

@@ -18,8 +18,8 @@ export function CollapsibleNav({ navItems }: { navItems: NavItem[] }) {
   return (
     <div className="flex h-10">
       <div className="flex-1">
-        <button onClick={toggleDrawer}>
-          <Bars3Icon className="size-8" />
+        <button className="pl-2" onClick={toggleDrawer}>
+          <Bars3Icon className="size-10" />
         </button>
 
         {drawerOpen ? (
