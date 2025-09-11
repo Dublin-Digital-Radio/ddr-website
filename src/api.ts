@@ -436,7 +436,8 @@ const blogPostsSchema = buildStrapiListSchema(
   z.object({
     slug: z.string(),
     title: z.string(),
-    content: z.string(),
+    content_markdown: z.string(),
+    content: z.string().nullish(),
     date: z.string(),
     image: imageSchema,
   }),

@@ -52,7 +52,7 @@ export default async function BlogPost(props: {
     .use(rehypeRaw)
     .use(rehypeSanitize)
     .use(rehypeStringify)
-    .process(blogPost.attributes.content);
+    .process(blogPost.attributes.content_markdown);
   const contentHtml = processedContent.toString();
 
   return (
