@@ -1,3 +1,5 @@
+This repository has been moved to https://codeberg.org/Dublin-Digital-Radio/ddr-website.
+
 The ddr. website is a [Next.js](https://nextjs.org/) app.
 
 ## Getting Started
